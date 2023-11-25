@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Cas.dll": "sha256-K7Pl5QMoEUVmxCS18Olcb93x6KxIjA2E3kBVwRfEmS4=",
-      "InspiredCalculator.dll": "sha256-yvXgWn3WEJ+cF\/ZgIFbHxrhO4VXBGWDDZsu51MbemvI=",
+      "InspiredCalculator.dll": "sha256-Lr7juRICH1PhZwCnybGhW3keL0yCMEmg+s1lK7YXyuc=",
       "Microsoft.AspNetCore.Components.dll": "sha256-t3yMB1qLcTBQrZMlvE1d4mtty8HBDX2U+5lfpiXgIB8=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-frOJbnliohgxNCA1JD0Mllw\/\/FWQQRGaBtiog9MkALM=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-91GZDuxfk21LeqhJDRTF5qrWydHXMlw1hAHzBSInttY=",

@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-bR76lO10kheClUeEWS7Kht7pY\/RR3SFJOZSBlX\/mc5k=",
+      "hash": "sha256-lRqlITI8Gnkub\/hQxDJPSqruPUIs3niKbEe6CbqbwwU=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -41,7 +41,7 @@
       "url": "_framework\/Cas.dll"
     },
     {
-      "hash": "sha256-yvXgWn3WEJ+cF\/ZgIFbHxrhO4VXBGWDDZsu51MbemvI=",
+      "hash": "sha256-Lr7juRICH1PhZwCnybGhW3keL0yCMEmg+s1lK7YXyuc=",
       "url": "_framework\/InspiredCalculator.dll"
     },
     {
@@ -165,7 +165,7 @@
       "url": "_framework\/System.Text.RegularExpressions.dll"
     },
     {
-      "hash": "sha256-ythdyvK1Q5VEWT4OpKy8oASAsVPKkHc6VA6BRW+C9aY=",
+      "hash": "sha256-I\/wbODknXR1PI4VfTx9IeYjFpLTsx\/eaxXeUGN0517Q=",
       "url": "InspiredCalculator.styles.css"
     },
     {
@@ -325,6 +325,10 @@
       "url": "icons\/integral.indefinite.svg"
     },
     {
+      "hash": "sha256-+0KyGnUNzF94qUktU+8BjoLKUah+y\/zV04AuiBPTAfU=",
+      "url": "icons\/keyboard.svg"
+    },
+    {
       "hash": "sha256-3sg6tMP20Eg9xNRFTInpUO8SJUmG0YfJhoqOERtmKro=",
       "url": "icons\/matrix.2x2.svg"
     },
@@ -365,5 +369,5 @@
       "url": "js\/utils.js"
     }
   ],
-  "version": "dr8i2Vo3"
+  "version": "UJg4SIzG"
 };

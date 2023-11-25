@@ -379,6 +379,11 @@ span.error[b-dqofjblu5l] {
     }
 }
 
+input[b-yg96lenv5y] {
+    background-color: transparent;
+    color: white;
+}
+
 table[b-yg96lenv5y] {
     width: 100%;
     table-layout: fixed;
@@ -452,6 +457,27 @@ button.right[b-yg96lenv5y] {
     }
     #Input[b-yg96lenv5y] {
         font-size: 80%;
+    }
+}
+
+.show-short[b-yg96lenv5y] {
+    display: none;
+}
+@media (max-height: 640px) {
+    button[b-yg96lenv5y] {
+        padding: 2px;
+    }
+    a.w3-button[b-yg96lenv5y] {
+        padding: 2px;
+    }
+    #Input[b-yg96lenv5y] {
+        font-size: 80%;
+    }
+    .hide-short[b-yg96lenv5y]  {
+        display: none !important;
+    }
+    .show-short[b-yg96lenv5y] {
+        display: block !important;
     }
 }
 
