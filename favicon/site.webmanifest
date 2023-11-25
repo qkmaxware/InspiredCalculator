@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Inspired Calculator",
+    "short_name": "Inspired",
     "icons": [
         {
             "src": "android-chrome-192x192.png",
