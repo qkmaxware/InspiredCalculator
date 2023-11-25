@@ -353,7 +353,7 @@
       "url": "icons\/x.svg"
     },
     {
-      "hash": "sha256-NrywXNRKe7Gz0PmEw2WNWpQJUJjwFbl9AIQWWo\/Gvh8=",
+      "hash": "sha256-lVcc84MjFqt6JXNwPJjwGZONrAWUWE2iPwnZHsSuV6o=",
       "url": "index.html"
     },
     {
@@ -365,5 +365,5 @@
       "url": "js\/utils.js"
     }
   ],
-  "version": "yg8TUGEV"
+  "version": "O2fog69t"
 };
