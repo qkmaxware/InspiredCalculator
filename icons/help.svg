@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="help.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.8940582"
+     inkscape:cx="125.44753"
+     inkscape:cy="119.7979"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       aria-label="?"
+       id="text2514"
+       style="font-size:64.4913px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:1.61228;fill:#ffffff">
+      <path
+         d="m 28.728584,45.142826 q -0.03149,-1.133636 -0.03149,-1.700455 0,-3.337928 0.944696,-5.76265 0.692778,-1.826414 2.235783,-3.684318 1.133636,-1.354065 4.062196,-3.936236 2.96005,-2.613662 3.841767,-4.156666 0.881717,-1.543005 0.881717,-3.369419 0,-3.306439 -2.582171,-5.794141 -2.582171,-2.519191 -6.329469,-2.519191 -3.621338,0 -6.046059,2.267272 -2.424722,2.267273 -3.18048,7.085226 l -5.82563,-0.692777 q 0.787247,-6.455428 4.660504,-9.887827 3.904747,-3.4323983 10.297196,-3.4323983 6.770327,0 10.801033,3.6843173 4.030707,3.684318 4.030707,8.91164 0,3.02303 -1.417046,5.573711 -1.417045,2.550682 -5.542221,6.203509 -2.771111,2.456212 -3.621338,3.621338 -0.850227,1.165126 -1.259596,2.676641 -0.409368,1.511515 -0.472348,4.912424 z m -0.346388,11.367851 v -6.455428 h 6.455428 v 6.455428 z"
+         id="path2960"
+         style="fill:#ffffff" />
+    </g>
+    <ellipse
+       style="fill:none;stroke:#ffffff;stroke-width:2.92068;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path2838"
+       cx="32"
+       cy="32.000004"
+       rx="30.539658"
+       ry="30.53966" />
+  </g>
+</svg>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="info.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.2035073"
+     inkscape:cx="116.2788"
+     inkscape:cy="120.33686"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="2552"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       aria-label="i"
+       id="text1395"
+       style="font-size:56.7687px;line-height:1.25;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';stroke-width:1.41922;fill:#ffffff">
+      <path
+         d="m 35.991549,49.199698 2.855066,0.665258 v 1.82946 H 25.153384 v -1.82946 l 2.827347,-0.665258 V 28.133188 L 25.319699,27.46793 v -1.82946 h 10.67185 z M 27.70354,16.546608 q 0,-1.801741 1.24736,-3.021381 1.275078,-1.21964 3.021381,-1.21964 1.774021,0 2.993661,1.247359 1.24736,1.21964 1.24736,2.993662 0,1.746303 -1.21964,3.021381 -1.21964,1.247359 -3.021381,1.247359 -1.774022,0 -3.021381,-1.21964 -1.24736,-1.247359 -1.24736,-3.0491 z"
+         style="font-weight:bold;fill:#ffffff"
+         id="path15383" />
+    </g>
+    <ellipse
+       style="fill:none;stroke:#ffffff;stroke-width:3.36753;stroke-linecap:round;stroke-linejoin:round"
+       id="path15257"
+       cx="32"
+       cy="32.000004"
+       rx="30.316233"
+       ry="30.316235" />
+  </g>
+</svg>

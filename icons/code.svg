@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="code.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.2035073"
+     inkscape:cx="119.08823"
+     inkscape:cy="124.39491"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       aria-label="&lt;/&gt;"
+       transform="scale(0.78204726,1.2786951)"
+       id="text1659"
+       style="font-size:45.2902px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:1.13226;fill:#ffffff">
+      <path
+         d="M 2.4060931,29.802211 V 22.681389 L 25.117536,14.034676 v 5.042073 l -18.421258,7.187166 18.421258,7.165051 v 5.019958 z"
+         style="font-weight:bold;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Bold';fill:#ffffff"
+         id="path10066" />
+      <path
+         d="M 29.319264,41.655506 47.47515,8.3955157 h 5.042072 L 34.449794,41.655506 Z"
+         style="font-weight:bold;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Bold';fill:#ffffff"
+         id="path10068" />
+      <path
+         d="M 56.763179,38.448924 V 33.428966 L 75.162323,26.263915 56.763179,19.076749 v -5.042073 l 22.711443,8.646713 v 7.120822 z"
+         style="font-weight:bold;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Bold';fill:#ffffff"
+         id="path10070" />
+    </g>
+  </g>
+</svg>
