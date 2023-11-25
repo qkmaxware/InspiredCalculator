@@ -57,12 +57,18 @@ public class DocumentStatistics {
                 }
             }
         }
-        if (values.Count % 2 == 0) {
-            // Even 
-            this.Median = (values[values.Count / 2] + values[values.Count/2 + 1]) / 2;
+        if (values.Count > 2) {
+            if (values.Count % 2 == 0) {
+                // Even 
+                this.Median = (values[values.Count / 2] + values[values.Count/2 + 1]) / 2;
+            } else {
+                // Odd
+                this.Median = values[(values.Count + 1) / 2];
+            }
         } else {
-            // Odd
-            this.Median = values[(values.Count + 1) / 2];
+            if (values.Count > 0) {
+                this.Median = values.First().Key;
+            } 
         }
     }
 }
