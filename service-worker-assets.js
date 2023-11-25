@@ -273,7 +273,7 @@
       "url": "favicon\/safari-pinned-tab.svg"
     },
     {
-      "hash": "sha256-drRCIJ\/+HMiD8GyrbRLmto384IzB4tVjnPk4l80+tbE=",
+      "hash": "sha256-OPWYO2R6eNm\/jAF\/1weLbdjVe83LnqjGbX1blyNFitw=",
       "url": "favicon\/site.webmanifest"
     },
     {
@@ -365,5 +365,5 @@
       "url": "js\/utils.js"
     }
   ],
-  "version": "RELTPHV8"
+  "version": "dr8i2Vo3"
 };
