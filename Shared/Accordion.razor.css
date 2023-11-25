@@ -1,0 +1,16 @@
+.accordion {
+    padding-bottom: 8px;
+}
+
+.expand {
+    border: 1px solid white;
+    padding: 2px;
+    cursor: pointer;
+    width: 2em;
+    display: inline-block;
+    text-align: center;
+}
+
+.accordion .content {
+    padding-left: 2.5em;
+}

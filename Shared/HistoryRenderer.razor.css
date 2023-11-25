@@ -1,0 +1,40 @@
+#History {
+    list-style-position: outside;
+    list-style-type: none;
+    border-bottom: 1px solid #ddd;
+}
+
+#History .input {
+    text-align: left;
+    color: white;
+    border-color: white !important;
+    pointer-events: none;
+}
+
+@media print {
+    #History {
+        border-bottom: none !important;
+    }
+    #History .input {
+        text-align: left;
+        color: black;
+        border-color: black !important;
+    }
+    ol {
+        counter-reset: history-list-count;
+    }
+    ol > li {
+        list-style: none;
+        border-bottom: 0;
+    }
+    ol > li.expr:before {
+        content: "(" counter(history-list-count) ") ";
+        counter-increment: history-list-count;
+    }
+}
+
+#History .result {
+    text-align: right;
+    color: rgb(48, 140, 170);
+    border-color: rgb(48, 140, 170) !important;
+}

@@ -1,0 +1,230 @@
+@using Qkmaxware.Cas
+@inject IJSRuntime js
+@inject InspiredCalculator.Js.Alerts alert
+@inject InspiredCalculator.Js.Printing printer
+
+<DocumentInfo @ref=infoModal></DocumentInfo>
+
+<PageDropdown @ref=documentMenu Title="Document">
+        <Accordion Title="File">
+            <div class="w3-bar-block">
+                <button class="w3-button w3-bar-item" @onclick=fileInfo><img src="icons/info.svg" class="icon"> Info</button>
+                <button class="w3-button w3-bar-item" @onclick=fileNew><img src="icons/page.new.svg" class="icon"> New</button>
+                <button class="w3-button w3-bar-item" @onclick=fileRename><img src="icons/cursor.svg" class="icon"> Rename</button>
+                @*<label class="w3-button w3-bar-item">
+                    <img src="icons/folder.svg" class="icon"> Open
+                    <InputFile style="display:none;" OnChange=@(async (e) => { await fileUploadDoc(e); }) accept=".calc" />
+                </label>
+                <button class="w3-button w3-bar-item" @onclick=fileDownloadDoc><img src="icons/floppy.svg" class="icon"> Save</button>*@
+                <button class="w3-button w3-bar-item" @onclick=PrintPage><img src="icons/page.svg" class="icon"> Print</button>
+                <button class="w3-button w3-bar-item" @onclick=fileClose><img src="icons/x.svg" class="icon"> Close</button>
+            </div>
+        </Accordion>
+        <Accordion Title="Edit">
+            <div class="w3-bar-block">
+                <button class="w3-button w3-bar-item" @onclick=documentVariables>Clear Variables</button>
+                <button class="w3-button w3-bar-item" @onclick=documentClearHistory>Clear History</button>
+            </div>
+        </Accordion>
+        <Accordion Title="View">
+            <div class="w3-bar-block">
+                <div class="w3-bar-item w3-row">
+                    <div class="w3-half">
+                        <b>Font-Size</b><br>
+                        <p>
+                            The size of the font for the calculator display.
+                        </p>
+                    </div>
+                    <div class="w3-half">
+                        <select @bind=viewFontSize class="w3-select">
+                            <option value="80">80%</option>
+                            <option value="100">100%</option>
+                            <option value="125">125%</option>
+                            <option value="150">150%</option>
+                            <option value="200">200%</option>
+                            <option value="400">400%</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </Accordion>
+        <div class="w3-bar-block">
+            
+        </div>
+</PageDropdown>
+
+<div id="Calculator">
+    <div @ref=Display id="Display" style="font-size: y@(viewFontSize)%">
+        <DocumentCollection @ref=Documents></DocumentCollection>
+    </div>
+    <div id="Control">
+        <Input @ref=Control Calculator=@this></Input>
+    </div>
+</div>
+
+@code {
+    private ElementReference? Display;
+    private DocumentCollection? Documents;
+    private Input? Control;
+
+    private DocumentInfo? infoModal;
+    private PageDropdown? documentMenu;
+
+    public async Task ScrollDisplayToBottom() {
+        await js.InvokeVoidAsync("scrollToBottom", Display);
+    }
+
+    protected async Task PrintPage() {
+        await printer.PrintPage();
+    }
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+    }
+
+    public void NextDoc() {
+        Documents?.NextDoc();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender)
+            return;
+
+        this.Documents?.MakeDocument("Scratchpad");
+    }
+
+    public ExpressionBuilder? GetBuilder() => Documents?.GetBuilder();
+
+    public void ShowDocumentMenu() {
+        documentMenu?.Show();
+    }
+
+    public async Task SubmitExpression() {
+        var sideEffects = new SideEffects(
+            vars: this?.Control?.EnumerateVariables() ?? new System.Collections.ObjectModel.ReadOnlyDictionary<string, IExpression>(new Dictionary<string, IExpression>())
+        );
+        var mode = this.GetBuilder()?.Mode ?? ExpressionBuilder.BuilderMode.FreeType;
+        object? expr =  mode switch {
+            ExpressionBuilder.BuilderMode.Expression => this.GetBuilder()?.GetInputExpression(),
+            _ => this.GetBuilder()?.GetText()
+        };
+        var document = this.Documents?.GetActiveDocument();
+        var History = document?.History;
+        if (expr is not null && History is not null) {
+            var history = expr switch {
+                TreeBuilderNode e => new History.Record(e, IterativeSimplify(e.MakeExpression(sideEffects))),
+                _ => new History.Record(expr?.ToString())
+            };
+            History.Add(history);
+            if (Documents is not null)
+                await Documents.RepaintAsync();
+            this.GetBuilder()?.Clear();
+            if (Control is not null) {
+                if (history.Result is IExpression ansExpression)
+                    sideEffects.Assignments["ans"] = ansExpression; // Set the answer variable
+                await Control.UpdateVariables(sideEffects.Assignments);
+            }
+            await ScrollDisplayToBottom();
+        } else {
+            Console.WriteLine("No expression");
+        }
+    }
+
+    private const int MAX_ITERATIONS = 20;
+    private IExpression? IterativeSimplify(IExpression? expr) {
+        if (expr is null)
+            return null;
+
+        for (var i = 0; i < MAX_ITERATIONS; i++) {
+            var next_expr = expr.Simplify();
+
+            // Simplification failed, return the prior successful version
+            if (next_expr is null)
+                return expr;
+            
+            // Simplification made no changes, return prior successful version
+            if (expr == next_expr)
+                return expr;
+            
+            // Try again with a simpler expression
+            expr = next_expr;
+        }
+
+        // Fallback, we have reached max iterations and haven't fully simplified, return the best one we've got
+        return expr;
+    }
+
+    #region Document Menu
+    private void fileInfo() {
+        infoModal?.Show(this.Documents?.GetActiveDocument());
+        documentMenu?.Hide();
+    }
+    private async Task fileUploadDoc(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs e) {
+        foreach (var path in e.GetMultipleFiles(1)) {
+            using MemoryStream ms = new MemoryStream();
+            await path.OpenReadStream(maxAllowedSize: 512000 * 4).CopyToAsync(ms);
+            ms.Position = 0;
+
+            using var reader = new StreamReader(ms);
+            var contents = reader.ReadToEnd();
+            var loaded = System.Text.Json.JsonSerializer.Deserialize<Document>(contents);
+            if (ReferenceEquals(loaded, null))
+                return;
+            
+            this.Documents?.AddDocument(loaded);
+        }
+        if (this.Documents is not null)
+            await this.Documents.RepaintAsync();
+        documentMenu?.Hide();
+    }
+    private void fileDownloadDoc() {
+        var doc = this.Documents?.GetActiveDocument();
+        if (doc is null)
+            return;
+
+        Task.Run(async () => {
+            using var stream = new MemoryStream();
+            using var writer = new StreamWriter(stream);
+            writer.Write(System.Text.Json.JsonSerializer.Serialize(doc));
+            writer.Flush();
+            stream.Position = 0;
+
+            using var streamRef = new DotNetStreamReference(stream: stream);
+
+            await js.InvokeVoidAsync("downloadFileFromStream", (doc.Title ?? "New Document") + ".calc", streamRef);
+        });
+        documentMenu?.Hide();
+    }
+    private void fileNew() {
+        this.Documents?.MakeDocument(autoselect: true);
+        documentMenu?.Hide();
+    }
+    private async Task fileRename() {
+        var doc = this.Documents?.GetActiveDocument();
+        if (doc is null)
+            return;
+
+        var name = await alert.Ask("New File Name?", doc.Title ?? string.Empty);
+        doc.Title = name;
+        if (this.Documents != null)
+            await this.Documents.RepaintAsync();
+        documentMenu?.Hide();
+    }
+    private void fileClose() {
+        this.Documents?.CloseCurrentDocument();
+        documentMenu?.Hide();
+    }
+    private void documentVariables() {
+        this.Control?.ClearVariables();
+        documentMenu?.Hide();
+    }
+    private void documentClearHistory() {
+        this.Documents?.GetActiveDocument()?.History?.Clear();
+        this.Documents?.Repaint();
+        documentMenu?.Hide();
+    }
+
+    private string viewFontSize = "100";
+    #endregion
+}

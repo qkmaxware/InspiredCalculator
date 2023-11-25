@@ -1,0 +1,33 @@
+.w3-modal {
+    padding-top: 0;
+    border: 0;
+}
+
+.w3-modal-content {
+    background-color: rgb(30, 30, 30);
+    color: white;
+    border-top: 0;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.w3-modal-content header {
+    background-color: rgb(40, 40, 40);
+    color: white;
+    font-size: 2em;
+    padding: 8px 12px;
+}
+.w3-modal-content header #Close { }
+
+.w3-modal-content article {
+    padding: 12px;
+    overflow-y: scroll;
+    max-height: 90dvh;
+}
+
+@media print {
+    .w3-modal { 
+        display: none !important;
+    }
+}

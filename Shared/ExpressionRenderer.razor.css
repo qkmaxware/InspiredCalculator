@@ -1,0 +1,99 @@
+section {
+    display: inline-block;
+}
+
+/* Subscript styles */
+sub {
+    bottom: 0;
+    display: inline-block;
+    font-size: medium;
+    vertical-align: sub;
+    position: static;
+}
+
+/* Exponent styles */
+sup {
+    top: 0;
+    display: inline-block;
+    font-size: medium;
+    vertical-align: super;
+    position: static;
+}
+
+/* Division styles */
+.div {
+    text-align: center;
+}
+
+.div > .numerator {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.div > .denominator {
+    border-top-width: 1px;
+    border-top-style: solid;
+    margin-top: -1px;
+}
+
+.symbol {
+    white-space: pre;
+}
+
+/* Matrix styles */
+table.matrix {
+    display: inline-block;
+    position: relative;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+table.matrix:before, table.matrix:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    border-width: 2px;
+    border-style: solid;
+    width: 6px;
+    height: 100%;
+}
+table.matrix:before {
+    left: -6px;
+    border-right: 0;
+}
+table.matrix:after {
+    right: -6px;
+    border-left: 0;
+}
+
+/* Parenthesis styles */
+.parenthesis {
+    position: relative;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+.parenthesis:before, .parenthesis:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    width: 6px;
+    height: 100%;
+}
+.parenthesis:before {
+    left: -6px;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+}
+.parenthesis:after {
+    right: -6px;
+    border-left: 0;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+span.error {
+    color: red;
+}

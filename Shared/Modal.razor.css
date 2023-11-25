@@ -1,0 +1,32 @@
+.w3-modal {
+    border: 0;
+}
+
+.w3-modal-content {
+    background-color: rgb(30, 30, 30);
+    color: white;
+    border-radius: 8px;
+}
+
+.w3-modal-content header {
+    background-color: rgb(40, 40, 40);
+    border-radius: 8px 8px 0 0;
+    color: white;
+    font-size: 2em;
+    padding: 8px 12px;
+}
+.w3-modal-content header #Close {
+    border-radius: 0 8px 0 0;
+}
+
+.w3-modal-content article {
+    /*padding: 12px;*/
+    overflow-y: scroll;
+    height: 70dvh;
+}
+
+@media print {
+    .w3-modal { 
+        display: none !important;
+    }
+}

@@ -1,0 +1,18 @@
+<div class="accordion">
+    <span class="expand" @onclick=toggle>@if(isOpen) { <text>-</text> } else { <text>+</text> }</span> <span>@Title</span>
+    <div class="content">
+    @if (isOpen) {
+        @ChildContent
+    }
+    </div>
+</div>
+
+@code {
+    private bool isOpen;
+    [Parameter] public string? Title {get; set;}
+    [Parameter] public RenderFragment? ChildContent {get; set;}
+
+    private void toggle() {
+        isOpen = !isOpen;
+    }
+}

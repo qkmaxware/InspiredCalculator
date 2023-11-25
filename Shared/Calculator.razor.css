@@ -1,0 +1,29 @@
+#Calculator {
+    height: 100dvh;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#Calculator #Display {
+    flex-grow: 1;
+    background-color: rgb(30, 30, 30);
+    color: white;
+    overflow-y: auto;
+}
+
+@media print {
+    #Calculator {
+        background-color: transparent;
+        height: auto;
+        display: block;
+    }
+    #Calculator #Display {
+        background-color: transparent;
+        color: black;
+    }
+    #Calculator #Builder {
+        display: none;
+    }
+}

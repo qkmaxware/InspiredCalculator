@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="house.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.8920299"
+     inkscape:cx="98.028033"
+     inkscape:cy="101.83159"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1594"
+       style="fill:#ffffff;stroke-width:0.643003;stroke-linecap:round"
+       d="m 8.6182101,26.762709 c -1.681584,0 -3.0351161,0.120213 -3.0351161,1.584399 v 30.626555 c 0,1.464185 1.3535321,2.642732 3.0351161,2.642732 H 25.739258 v -9.525 c 0,-2.420215 2.237818,-2.781226 5.017378,-2.781226 h 2.486136 c 2.779557,0 5.017378,0.361011 5.017378,2.781226 v 9.525 h 17.121639 c 1.681583,0 3.035117,-1.178547 3.035117,-2.642732 V 28.347108 c 0,-1.464186 -1.353534,-1.584399 -3.035117,-1.584399 z"
+       sodipodi:nodetypes="sssscsssscsssss" />
+    <path
+       id="path1839"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:1.57892;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:transform-center-y="-3.8305904"
+       d="M 32.000296,2.3802165 3.3388067,25.363826 H 60.661193 L 52.918504,19.154903 V 9.1487955 h -7.122495 v 4.2943115 z" />
+  </g>
+</svg>

@@ -1,0 +1,113 @@
+<Modal @ref=infoModal Title="Document Info">
+    <div class="w3-container">
+    @if (Document is not null) {
+    <h3>Document</h3>
+    
+    <ul class="w3-ul w3-padding">
+        <li>
+            <b>Title</b>
+            <p>@Document.Title</p>
+        </li>
+        @if (Stats is not null) {
+        <li>
+            <b>Lines</b>
+            <p>@Stats.TotalLines records</p>
+        </li>
+        <li>
+            <b>Expressions</b>
+            <p>@Stats.ExpressionLines records</p>
+        </li>
+        <li>
+            <b>Text</b>
+            <p>@Stats.TextLines records</p>
+        </li>
+        }
+    </ul>
+    } else {
+        <text>No document available to display info about. Create and select a document.</text>
+    }
+    @if (Stats is not null) {
+    <h3>History Statistics</h3>
+    <ul class="w3-ul w3-padding">
+        <li class="w3-row">
+            <span class="w3-col">n</span>
+            <div class="w3-rest">
+                <span class="w3-large">Quantity</span><br>
+                <p>@Stats.MetricsAbleExpressions</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">&downarrow;</span>
+            <div class="w3-rest">
+                <span class="w3-large">Minimum</span><br>
+                <p>@Stats.Min</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">&uparrow;</span>
+            <div class="w3-rest">
+                <span class="w3-large">Maximum</span><br>
+                <p>@Stats.Max</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">&uparrow;&downarrow;</span>
+            <div class="w3-rest">
+                <span class="w3-large">Range</span><br>
+                <p>@Stats.Range</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col" style="position: relative">
+                <span style="position: absolute; top: -0.5em;">~</span>
+                x
+            </span>
+            <div class="w3-rest">
+                <span class="w3-large">Median</span><br>
+                <p>@Stats.Median</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">x̄</span>
+            <div class="w3-rest">
+                <span class="w3-large">Mean (Average)</span><br>
+                <p>@Stats.Mean</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">x̄<sup>2</sup></span>
+            <div class="w3-rest">
+                <span class="w3-large">Mean Squared</span><br>
+                <p>@Stats.SquaredMean</p>
+            </div>
+        </li>
+        <li class="w3-row">
+            <span class="w3-col">&sum;<sub>x</sub></span>
+            <div class="w3-rest">
+                <span class="w3-large">Sum</span><br>
+                <p>@Stats.Sum</p>
+            </div>
+        </li>
+    </ul>
+    }
+    </div>
+</Modal>
+
+@code {
+    private Modal? infoModal;
+    private Document? Document {get; set;}
+    private DocumentStatistics? Stats {get; set;}
+
+    public void Show(Document? doc) {
+        if (doc is null) {
+            this.Document = null;
+            this.Stats = null;
+            StateHasChanged();
+            return;
+        }
+        this.Document = doc;
+        this.Stats = new DocumentStatistics(doc);
+        infoModal?.Show();
+        StateHasChanged();
+    }
+}

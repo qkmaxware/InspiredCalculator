@@ -1,0 +1,149 @@
+@using Qkmaxware.Cas
+
+<section class='@(IsEmpty ? "empty" : string.Empty) @(IsSelected ? "selected" : string.Empty)' @onclick=selectMe @onclick:stopPropagation="true">
+    @if (Node?.Mode is null) {
+        <text>&nbsp;</text>
+    }
+    @switch (Node?.Mode) {
+        case AtomInputMode atom:
+            <span class="value">@atom.String</span>
+            break;
+        case ConstantInputMode constant:
+            <span class="const">@constant.Constant.RootSymbol<sub>@constant.Constant.SubscriptSymbol</sub></span>
+            break;
+        case ParenthesizedInputMode paren:
+             <section class="parenthesis">
+                @for (var i = 0; i < Node.ChildrenCount; i++) {
+                    if (i != 0) {
+                        <text>, </text>
+                    }
+                    <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(i)></ExpressionBuilderNode>
+                }
+            </section>
+            break;
+        case MatrixInputMode mtx:
+            <table class="value matrix">
+                @for (var row = 0; row < mtx.Rows; row++) {
+                    <tr>
+                        @for (var col = 0; col < mtx.Columns; col++) {
+                            <td><ExpressionBuilderNode Builder=@Builder Node=@(Node.GetChild(mtx.Get1dIndex(row, col)))></ExpressionBuilderNode></td>
+                        }
+                    </tr>
+                }
+            </table>
+            break;
+        case AssignmentInputMode assign:
+            <section class="assign">
+                <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode> <span class="operator">:=</span> <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode> 
+            </section>
+            break;
+        case AddOperatorInputMode add:
+            <section class="add">
+                <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode> <span class="operator">&plus;</span> <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode> 
+            </section>
+            break;
+        case SubOperatorInputMode sub:
+            <section class="sub">
+                <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode> <span class="operator">&minus;</span> <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode> 
+            </section>
+            break;
+        case MulOperatorInputMode mul:
+            <section class="mul">
+                <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode> <span class="operator">&middot;</span> <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode> 
+            </section>
+            break;
+        case DivOperatorInputMode div:
+            <section class="div">
+                <section class="numerator">
+                    <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode> 
+                </section>
+                <br> 
+                <section class="denominator">
+                    <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode> 
+                </section>
+            </section>
+        break;
+        case PowOperatorInputMode pow:
+            <section class="pow">
+                <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode><sup><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode></sup>
+            </section>
+            break;
+        case RootOperatorInputMode root:
+            <section class="root">
+                <sup><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></sup>
+                &Sqrt;
+                <section class="parenthesis">
+                    <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode>
+                </section>
+            </section>
+            break;
+        case FunctionInputMode func:
+            <section class="function">
+                @(func.FunctionName)
+                <section class="parenthesis">
+                    @for (var i = 0; i < Node.ChildrenCount; i++) {
+                        if (i != 0) {
+                            <text>, </text>
+                        }
+                        <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(i)></ExpressionBuilderNode>
+                    }
+                </section>
+            </section>
+            break;
+        case DerivativeInputMode derivative:
+            <section class="div">
+                <section class="numerator">d</section>
+                <br> 
+                <section class="denominator">
+                    d<ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode>
+                </section>
+            </section>
+            <section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></section>
+            break;
+        case IndefIntegralInputMode integral:
+            <text>∫</text><section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></section><text>d</text><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode>
+            break;
+        case DefIntegralInputMode defIntegral:
+            <text>∫</text>
+            <sub><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(3)></ExpressionBuilderNode>=<ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></sub>
+            <sup><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode></sup>
+            <section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(2)></ExpressionBuilderNode></section><text>d</text><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(3)></ExpressionBuilderNode>
+            break;
+        case UnitConversionInputNode conv:
+            <section class="function">
+                convert<sub>@conv.Quantity.Name</sub>
+                <section class="parenthesis">
+                    @for (var i = 0; i < Node.ChildrenCount; i++) {
+                        if (i != 0) {
+                            <text>, </text>
+                        }
+                        <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(i)></ExpressionBuilderNode>
+                    }
+                    from <select @bind=@(conv.FromUnit)>
+                        @foreach (var unit in conv.Quantity.AllowedUnits) {
+                            <option>@unit.Name</option>
+                        }
+                    </select> to <select @bind=@(conv.ToUnit)>
+                        @foreach (var unit in conv.Quantity.AllowedUnits) {
+                            <option>@unit.Name</option>
+                        }
+                    </select>
+                </section>
+            </section>
+            break;
+    }
+</section>
+
+@code {
+    [Parameter] public ExpressionBuilder? Builder {get; set;}
+    [Parameter] public TreeBuilderNode? Node {get; set;}
+
+    public bool IsEmpty => ReferenceEquals(null, Node?.Mode);
+    public bool IsSelected => !ReferenceEquals(null, Builder) && Builder.IsSelected(this.Node);
+
+    private void selectMe() {
+        if (Builder is not null) {
+            Builder.Select(this.Node);
+        }
+    }
+}

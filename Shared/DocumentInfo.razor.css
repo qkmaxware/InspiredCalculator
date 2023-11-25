@@ -1,0 +1,13 @@
+ul p {
+    text-align: right;
+}
+
+ul div.w3-bar-item {
+    text-align: right;
+}
+
+ul span.w3-col {
+    width: 85px;
+    background-color: grey;
+    text-align: center;
+}

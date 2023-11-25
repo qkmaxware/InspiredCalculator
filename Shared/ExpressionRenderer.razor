@@ -1,0 +1,110 @@
+@using Qkmaxware.Cas
+
+@switch (Expression) {
+    case Qkmaxware.Cas.Calculus.ConstantOfIntegration cSymbol:
+        <span class="symbol">C</span>
+        break;
+    case Symbol symbol:
+        <span class="symbol">@symbol.Identifier</span>
+        break;
+    case Complex real:
+        <span class="value">@real.ToString()</span>
+        break;
+    case float f:
+        <span class="value">@f</span>
+        break;
+    case double d:
+        <span class="value">@d</span>
+        break;
+    case Matrix matrix:
+        <table class="value matrix">
+            @for (var row = 0; row < matrix.Rows; row++) {
+                <tr>
+                    @for (var col = 0; col < matrix.Columns; col++) {
+                        <td><ExpressionRenderer Expression=@(matrix[row, col])></ExpressionRenderer></td>
+                    }
+                </tr>
+            }
+        </table>
+        break;
+    case Addition add:
+        <section class="add">
+            <ExpressionRenderer Expression=@add.Lhs></ExpressionRenderer> <span class="operator">&plus;</span> <ExpressionRenderer Expression=@add.Rhs></ExpressionRenderer> 
+        </section>
+        break;
+    case Subtraction sub:
+        <section class="sub">
+            <ExpressionRenderer Expression=@sub.Lhs></ExpressionRenderer> <span class="operator">&minus;</span> <ExpressionRenderer Expression=@sub.Rhs></ExpressionRenderer> 
+        </section>
+        break;
+    case Multiplication mul:
+        <section class="mul">
+            <ExpressionRenderer Expression=@mul.Lhs></ExpressionRenderer> <span class="operator">&middot;</span> <ExpressionRenderer Expression=@mul.Rhs></ExpressionRenderer> 
+        </section>
+        break;
+    case Division div:
+        <section class="div">
+            <section class="numerator">
+                <ExpressionRenderer Expression=@div.Numerator></ExpressionRenderer> 
+            </section>
+            <br> 
+            <section class="denominator">
+                <ExpressionRenderer Expression=@div.Denominator></ExpressionRenderer> 
+            </section>
+        </section>
+        break;
+    case Exponentiation pow:
+        <section class="pow">
+            <ExpressionRenderer Expression=@pow.Root></ExpressionRenderer><sup><ExpressionRenderer Expression=@pow.Power></ExpressionRenderer></sup>
+        </section>
+        break;
+    case NthRoot root:
+        <section class="root">
+            <sup><ExpressionRenderer Expression=@root.Degree></ExpressionRenderer></sup>
+            &Sqrt;
+            <section class="parenthesis">
+                <ExpressionRenderer Expression=@root.Radicand></ExpressionRenderer>
+            </section>
+        </section>
+        break;
+    case Logarithm log:
+        <section class="log">
+            Log<sub><ExpressionRenderer Expression=@log.Base></ExpressionRenderer></sub><section class="parenthesis"><ExpressionRenderer Expression=@log.Argument></ExpressionRenderer></section>
+        </section>
+        break;
+    case Function func:
+        <section class="function">
+            @(func.GetType().Name)<section class="parenthesis"><ExpressionRenderer Expression=@func.Argument></ExpressionRenderer></section>
+        </section>
+        break;
+    case DerivativeExpression derivative:
+        <section class="div">
+            <section class="numerator">d</section>
+            <br> 
+            <section class="denominator">
+                d<ExpressionRenderer Expression=@derivative.WithRespectTo></ExpressionRenderer>
+            </section>
+        </section>
+        <section class="parenthesis"><ExpressionRenderer Expression=@derivative.ExpressionToDerivate></ExpressionRenderer></section>
+        break;
+    case IntegralExpression integration:
+        <text>∫</text><section class="parenthesis"><ExpressionRenderer Expression=@integration.ExpressionToIntegrate></ExpressionRenderer></section><text>d</text><ExpressionRenderer Expression=@integration.WithRespectTo></ExpressionRenderer>
+        break;
+    // Fallback case for all unknown expression types
+    case BaseExpression expr:
+        <section>
+            @(expr.GetType().Name)()
+        </section>
+        break;
+    case string text:
+        <section class="symbol">@text</section>
+        break;
+    // Fallback case for non-expressions
+    default:
+        <span class="error">@Expression</span>
+        break;
+}
+
+@code {
+    [Parameter] public object? Expression {get; set;}
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="folder.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.2035073"
+     inkscape:cx="119.08823"
+     inkscape:cy="124.39491"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="2552"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2509"
+       transform="translate(9.0741367e-4,-1.740312)">
+      <path
+         id="rect1750"
+         style="fill:#ffffff;stroke-width:3.43726;stroke-linecap:round;stroke-linejoin:round"
+         d="m 19.581916,23.536533 h 39.958536 c 1.277567,0 2.484574,1.041041 2.306078,2.306078 l -4.244067,30.078507 c -0.178496,1.265036 -1.028511,2.306078 -2.306078,2.306078 H 15.337849 c -1.277567,0 -2.484574,-1.041042 -2.306078,-2.306078 l 4.244067,-30.078507 c 0.178496,-1.265037 1.028511,-2.306078 2.306078,-2.306078 z"
+         sodipodi:nodetypes="sssssssss" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:3.43726;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 52.261355,56.429229 H 3.8526696 V 10.972058 H 26.185332 c 1.429136,1.675857 5.121165,5.315377 9.323866,5.383137 h 18.686587 v 2.376517"
+         id="path1925"
+         sodipodi:nodetypes="ccccccc" />
+    </g>
+  </g>
+</svg>

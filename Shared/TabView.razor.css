@@ -1,0 +1,34 @@
+header {
+    background-color: rgb(49, 49, 49);
+}
+
+header.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+@media print {
+    header {
+        background-color: transparent !important;
+    }
+    header button {
+        display: none;
+    }
+    header button.active {
+        display: block !important;
+        background-color: transparent;
+        text-align: center;
+        width: 100%;
+    }
+}
+
+.tab {
+    
+}
+
+.active {
+    background-color: rgb(48, 140, 170);
+}

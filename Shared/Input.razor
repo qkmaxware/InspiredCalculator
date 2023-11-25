@@ -1,0 +1,884 @@
+@implements IDisposable
+@inject InspiredCalculator.Js.Alerts alert
+
+<Modal @ref=Catalog Title="Catalog">
+    <TabView>
+            <Tab>
+                <Title>f(x)</Title>@*All math functions*@
+                <Content>
+                    <Accordion Title="Number">
+                        <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.clickEx(); this. closeCatalog(); })><span class="symbol">e<sup>x</sup></span> Exponential</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.addLn(); this. closeCatalog(); })><span class="symbol">ln</span> Natural Logarithm</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.click10x(); this. closeCatalog(); })><span class="symbol">10<sup>x</sup></span> Power of Ten</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.addLog(); this. closeCatalog(); })><span class="symbol">log<sub>10</sub></span> Base 10 Logarithm</button>
+                        </div>
+                    </Accordion>
+                    <Accordion Title="Trigonometry">
+                        <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addSin(); closeCatalog(); })><span class="symbol">sin</span> Sine</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addCos(); closeCatalog(); })><span class="symbol">cos</span> Cosine</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addTan(); closeCatalog(); })><span class="symbol">tan</span> Tangent</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addASin(); closeCatalog(); })><span class="symbol">asin</span> Arcsine</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addACos(); closeCatalog(); })><span class="symbol">acos</span> Arccosine</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addATan(); closeCatalog(); })><span class="symbol">atan</span> Arctangent</button>
+                        </div>
+                    </Accordion>
+                    <Accordion Title="Matrix">
+                        Some matrix functions
+                    </Accordion>
+                </Content>
+            </Tab>
+            <Tab>
+                <Title>°C/°F</Title>@*Values for standard measurement units*@
+                <Content>
+                    <div class="w3-bar-block">
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addAngleConversion(); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Angles.Name</sub></span> Convert between different angular measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addTemperatureConversion(); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Temperature.Name</sub></span> Convert between different temperature measurements.</button>
+                    </div>
+                </Content>
+            </Tab>
+            <Tab>
+                <Title>&alpha;&beta;</Title>@*Symbols Library*@
+                <Content>
+                    @foreach (var group in Constant.ConstantByGroup) {
+                        <Accordion Title=@group.Key>
+                            <div class="w3-bar-block">
+                            @foreach (var constant in group) {
+                                 var self = constant;
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addConstant(self); closeCatalog(); })>
+                                <span class="symbol">@self.RootSymbol<sub>@self.SubscriptSymbol</sub></span> @self.Description <br>
+                                <div class="value">
+                                    @(self.Value)@(self.UnitOfMeasure)
+                                </div>
+                            </button>
+                            }
+                            </div>
+                        </Accordion>        
+                    }
+                    <Accordion Title="Basic Latin Symbols">
+                        <div class="w3-bar-block">
+                        @foreach (char start in SymbolSets.Latin) {
+                            char letter = start;
+                            <div class="w3-half" style="padding-right: 8px; padding-bottom: 8px;">
+                                <button class="w3-button w3-bar-item" @onclick=@(() => { clickLetter(letter); closeCatalog(); })>
+                                    @letter
+                                </button>
+                            </div>
+                        }
+                        </div>
+                    </Accordion>
+                    <Accordion Title="Greek Symbols">
+                        <div class="w3-bar-block">
+                        @foreach (char start in SymbolSets.Greek) {
+                            char letter = start;
+                            <div class="w3-half" style="padding-right: 8px; padding-bottom: 8px;">
+                                <button class="w3-button w3-bar-item" @onclick=@(() => { clickLetter(letter); closeCatalog(); })>
+                                    @letter
+                                </button>
+                            </div>
+                        }
+                        </div>
+                    </Accordion>
+                </Content>
+            </Tab>
+            <Tab>
+                <Title><img src="icons/template.svg" class="icon"></Title>@*Contains math templates*@
+                <Content>
+                    <Accordion Title="Matrix">
+                        <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrix(); closeCatalog(); })><img src="icons/matrix.2x2.svg" class="icon large"> Create an NxN matrix</button>
+                        </div>
+                    </Accordion>
+                    <Accordion Title="Calculus">
+                        <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { makeDerivative(); closeCatalog(); })><img src="icons/derivative.svg" class="icon large"> Derivative of a function</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { makeIndefIntegral(); closeCatalog(); })><img src="icons/integral.indefinite.svg" class="icon large"> Indefinite integral of a function</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { makeDefIntegral(); closeCatalog(); })><img src="icons/integral.definite.svg" class="icon large"> Definite intrgral of a function</button>
+                        </div>
+                    </Accordion>
+                </Content>
+            </Tab>
+            <Tab>
+                <Title><img src="icons/code.svg" class="icon"></Title>@*All external library functions*@
+                <Content></Content>
+            </Tab>
+    </TabView>
+</Modal>
+
+<Modal @ref=Variables Title="User Variables">
+    <div class="w3-bar-block w3-padding">
+    @foreach (var variable in variables) {
+        var self = variable;
+        <button class="w3-button w3-bar-item" @onclick=@(() => { clickVariableNamed(self.Key); closeCatalog(); })>
+            <span>@self.Key</span>
+            <div class="value">
+                <ExpressionRenderer Expression=@(self.Value)></ExpressionRenderer>
+            </div>
+        </button>
+    }
+    </div>
+</Modal>
+
+<div id="Input">
+    <div id="Navigation" class="w3-bottombar w3-topbar" style="padding: 12px">
+        <div class="w3-row">
+            <div class="w3-col s2 left-align">
+                <button class="w3-button full" @onclick=changeMode>mode</button>
+            </div>
+            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow top-left" @onclick=navigateUpLeft>&nbsp;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow top" @onclick=navigateUp>&uparrow;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow top-right" @onclick=navigateUpRight>&nbsp;</button>
+                </div>
+            </div>
+            <div class="w3-col s2 right-align">
+                <a href="" target="_blank" class="w3-button full"><img src="icons/help.svg" class="icon"> help</a>
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col s2 left-align">
+                &nbsp;
+            </div>
+            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow left" @onclick=navigateLeft>&leftarrow;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow center">&nbsp;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow right" @onclick=navigateRight>&rightarrow;</button>
+                </div>
+            </div>
+            <div class="w3-col s2 right-align">
+                &nbsp;
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col s2 left-align">
+                <button class="w3-button full" @onclick=clickSwitch><img src="icons/tab.svg" class="icon"> switch</button>
+            </div>
+            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow bottom-left" @onclick=navigateDownLeft>&nbsp;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow bottom" @onclick=navigateDown>&downarrow;</button>
+                </div>
+                <div class="w3-col s4">
+                    <button class="w3-button full arrow bottom-right" @onclick=navigateDownRight>&nbsp;</button>
+                </div>
+            </div>
+            <div class="w3-col s2 right-align">
+                <button class="w3-button full" @onclick=clickMenu><img src="icons/menu.svg" class="icon"> menu</button>
+            </div>
+        </div>
+    </div>
+    <div id="Arithmetic" class='w3-margin-bottom w3-margin-top @(IsCtrl ? "keyboard-alternate" : "keyboard-standard")'>
+        <table>
+            <tr>
+                <td class="left-align"><button class="w3-button full special" @onclick=clickCtrl>ctrl</button></td>
+                <td class="centre-align"><label>CAPS</label><button class="w3-button full" @onclick=clickShift>shift</button></td>
+                <td class="centre-align">&nbsp;</td>
+                <td class="centre-align"><label>:=</label><button class="w3-button full" @onclick=clickVar>var</button></td>
+                <td class="right-align"><label>clear</label><button class="w3-button full" @onclick=clickDelete>&leftarrow; del</button></td>
+            </tr>
+            <tr>
+                <td class="left-align">
+                    <label>&nbsp;</label>
+                    <div class="w3-dropdown-hover full">
+                        <button class="w3-button full right">trig&rtri;</button>
+                        <div class="w3-dropdown-content w3-card-4">
+                            <button class="w3-button flat" @onclick=addSin>Sin</button>
+                            <button class="w3-button flat" @onclick=addCos>Cos</button>
+                            <button class="w3-button flat" @onclick=addTan>Tan</button><br>
+                            <button class="w3-button flat" @onclick=addASin>Asin</button>
+                            <button class="w3-button flat" @onclick=addACos>Acos</button>
+                            <button class="w3-button flat" @onclick=addATan>Atan</button>
+                        </div>
+                    </div>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click7>&nbsp;7&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click8>&nbsp;8&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click9>&nbsp;9&nbsp;</button></td>
+                <td class="right-align">
+                    <label>&nbsp;</label>
+                    <button class="w3-button full right" @onclick=clickCatalog><img src="icons/book.svg" class="icon"></button>
+                </td>
+            </tr>
+            <tr>
+                <td class="left-align w3-row">
+                    <div class="w3-col s6">
+                        <label><sup>n</sup>&Sqrt;x</label>
+                        <button class="w3-button full left" @onclick=clickPow>^</button>
+                    </div>
+                    <div class="w3-col s6">
+                        <label>&Sqrt;</label>
+                        <button class="w3-button full right" @onclick=clickSquare>x<sup>2</sup></button>
+                    </div>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click4>&nbsp;4&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click5>&nbsp;5&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click6>&nbsp;6&nbsp;</button></td>
+                <td class="right-align w3-row">
+                    <div class="w3-col s6">
+                        <label>&nbsp;</label>
+                        <button class="w3-button full left" @onclick=clickTimes>&times;</button>
+                    </div>
+                    <div class="w3-col s6">
+                        <label>&nbsp;</label>
+                        <button class="w3-button full right" @onclick=clickDivide>&div;</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="left-align w3-row">
+                    <div class="w3-col s6">
+                        <label>ln</label>
+                        <button class="w3-button full left" @onclick=clickEx>e<sup>x</sup></button>
+                    </div>
+                    <div class="w3-col s6">
+                        <label>log</label>
+                        <button class="w3-button full right" @onclick=click10x>10<sup>x</sup></button>
+                    </div>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click1>&nbsp;1&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click2>&nbsp;2&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click3>&nbsp;3&nbsp;</button></td>
+                <td class="right-align w3-row">
+                    <div class="w3-col s6">
+                        <button class="w3-button full left" @onclick=clickPlus>&plus;</button>
+                    </div>
+                    <div class="w3-col s6">
+                        <button class="w3-button full right" @onclick=clickMinus>&minus;</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="left-align">
+                    <label>&nbsp;</label>
+                    <button class="w3-button full" @onclick=clickParen>()</button>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=click0>&nbsp;0&nbsp;</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickDot>&nbsp;.&nbsp;</button></td>
+                <td class="centre-align"><label>ans</label><button class="w3-button full digit" @onclick=clickAns>(-)</button></td>
+                <td class="right-align"><label>&nbsp;</label><button class="w3-button full" @onclick=clickEnter>enter</button></td>
+            </tr>
+        </table>
+    </div>
+    <div id="Keyboard" class="@(IsCaps ? "caps-lock" : "caps-none")">
+        <table>
+            <tr>
+                <td class="left-align">
+                    <div class="w3-dropdown-hover full">
+                        <button class="w3-button full">?!&rtri;</button>
+                        <div class="w3-dropdown-content w3-card-4">
+                            <button class="w3-button flat" @onclick=@(() => clickLetter('?'))>?</button>
+                            <button class="w3-button flat" @onclick=@(() => clickLetter('!'))>!</button>
+                        </div>
+                    </div>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicka>A</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickb>B</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickc>C</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickd>D</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicke>E</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickf>F</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickg>G</button></td>
+                <td class="centre-align">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="left-align">
+                    <div class="w3-dropdown-hover full">
+                        <button class="w3-button full">&pi;&rtri;</button>
+                        <div class="w3-dropdown-content w3-card-4">
+                            @foreach (var constant in Constant.All) {
+                                var self = constant;
+                                if (self.UID is not null) {
+                                    <button id="@self.UID" class="w3-button flat" @onclick=@(() => addConstant(self))>@self.RootSymbol<sub>@self.SubscriptSymbol</sub></button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickh>H</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicki>I</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickj>J</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickk>K</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickl>L</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickm>M</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickn>N</button></td>
+                <td class="centre-align">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="left-align"><button class="w3-button full" @onclick=clickComma>,</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicko>O</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickp>P</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickq>Q</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickr>R</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicks>S</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickt>T</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicku>U</button></td>
+                <td class="centre-align"><button class="w3-button full" @onclick=clickReturn>&larrhk;</button></td>
+            </tr>
+            <tr>
+                <td class="left-align">&nbsp;</td>
+                <td class="left-align">&nbsp;</td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickv>V</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickw>W</button></td>
+                <td class="centre-align"><button class="w3-button full digit var" @onclick=clickx>X</button></td>
+                <td class="centre-align"><button class="w3-button full digit var" @onclick=clicky>Y</button></td>
+                <td class="centre-align"><button class="w3-button full digit var" @onclick=clickz>Z</button></td>
+                <td class="centre-align">&nbsp;</td>
+                <td class="centre-align"><button class="w3-button full" @onclick=clickSpace>[___]</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Calculator? Calculator {get; set;}
+    private Modal? Catalog;
+    private Modal? Variables;
+    private bool IsCtrl {get; set;}
+    private bool IsShift {get; set;}
+    private bool IsCapsLock {get; set;}
+    private bool IsCaps => IsShift || IsCapsLock;
+
+    private Dictionary<string, Qkmaxware.Cas.IExpression> variables = new Dictionary<string, Qkmaxware.Cas.IExpression> {};
+
+    private static System.Collections.Concurrent.ConcurrentDictionary<Input, byte> inputs = new System.Collections.Concurrent.ConcurrentDictionary<Input, byte>();
+    protected override void OnInitialized() {
+        inputs.TryAdd(this, 0);
+    }
+    public void Dispose() {
+        inputs.TryRemove(this, out byte _);
+    }
+
+    [JSInvokableAttribute("Input.KeyboardIntercept")]
+    public static async Task InputKeyboardIntercept(bool ctrlKey, bool shiftKey, string code) {
+        foreach (var input in inputs)
+            await input.Key.keyboardIntercept(ctrlKey, shiftKey, code);
+    }
+    private async Task keyboardIntercept(bool ctrlKey, bool shiftKey, string code) {
+        if (shiftKey) {
+            IsShift = true;
+        }
+        if (ctrlKey) {
+            IsCtrl = true;
+        }
+
+        switch (code) {
+            // https://stackoverflow.com/questions/69745723/blazor-key-press-event-and-keycodes
+            case "Escape" : break;
+            case "Tab"   : clickSwitch(); break;
+            case "Backspace": 
+            case "Delete": clickDelete(); break;
+            case "NumpadEnter":
+            case "Enter": await clickEnter(); break;
+            case "Space": clickSpace(); break;
+
+            case "ArrowLeft": navigateLeft(); break;
+            case "ArrowRight": navigateRight(); break;
+            case "ArrowUp": navigateUp(); break;
+            case "ArrowDown": navigateDown(); break;
+
+            case "Digit1" when shiftKey: clickLetter('!'); break;
+            case "Slash" when shiftKey: clickLetter('?'); break;
+
+            case "NumpadAdd":
+            case "Equal" when shiftKey: clickPlus(); break;
+            case "NumpadSubtract":
+            case "Minus": clickMinus(); break;
+            case "NumpadMultiply":
+            case "Digit8" when shiftKey: clickTimes(); break;
+            case "NumpadDivide":
+            case "Slash": clickDivide(); break;
+            case "Digit6" when shiftKey: clickPow(); break;
+            case "Digit9" when shiftKey:
+            case "Digit0" when shiftKey: clickParen(); break;
+
+            case "Numpad0":
+            case "Digit0": click0(); break;
+            case "Numpad1":
+            case "Digit1": click1(); break;
+            case "Numpad2":
+            case "Digit2": click2(); break;
+            case "Numpad3":
+            case "Digit3": click3(); break;
+            case "Numpad4":
+            case "Digit4": click4(); break;
+            case "Numpad5":
+            case "Digit5": click5(); break;
+            case "Numpad6":
+            case "Digit6": click6(); break;
+            case "Numpad7":
+            case "Digit7": click7(); break;
+            case "Numpad8":
+            case "Digit8": click8(); break;
+            case "Numpad9":
+            case "Digit9": click9(); break;
+            case "KeyA"  : clicka(); break;
+            case "KeyB"  : clickb(); break;
+            case "KeyC"  : clickc(); break;
+            case "KeyD"  : clickd(); break;
+            case "KeyE"  : clicke(); break;
+            case "KeyF"  : clickf(); break;
+            case "KeyG"  : clickg(); break;
+            case "KeyH"  : clickh(); break;
+            case "KeyI"  : clicki(); break;
+            case "KeyJ"  : clickj(); break;
+            case "KeyK"  : clickk(); break;
+            case "KeyL"  : clickl(); break;
+            case "KeyM"  : clickm(); break;
+            case "KeyN"  : clickn(); break;
+            case "KeyO"  : clicko(); break;
+            case "KeyP"  : clickp(); break;
+            case "KeyQ"  : clickq(); break;
+            case "KeyR"  : clickr(); break;
+            case "KeyS"  : clicks(); break;
+            case "KeyT"  : clickt(); break;
+            case "KeyU"  : clicku(); break;
+            case "KeyV"  : clickv(); break;
+            case "KeyW"  : clickw(); break;
+            case "KeyX"  : clickx(); break;
+            case "KeyY"  : clicky(); break;
+            case "KeyZ"  : clickz(); break;
+
+            case "NumpadDecimal":
+            case "Period": clickDot(); break;
+            case "Comma": clickComma(); break;
+        }
+
+        clearModifiers();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void clearCtrl() {
+        if (this.IsCtrl) {
+            this.IsCtrl = false;
+        }
+    }
+    private void clearShift() {
+        if (this.IsShift) {
+            this.IsShift = false;
+        }
+    }
+    private void clearModifiers() {
+        clearCtrl();
+        clearShift();
+    }
+    private void clickCtrl() {
+        this.IsCtrl = !this.IsCtrl;
+        clearShift();
+    }
+
+    private void clickSwitch() {
+        Calculator?.NextDoc();
+    }
+
+    private void changeMode() {
+        var builder = this.Calculator?.GetBuilder();
+        if (builder is null) {
+            return;
+        }
+        
+        var mode = builder.Mode switch {
+            ExpressionBuilder.BuilderMode.FreeType => ExpressionBuilder.BuilderMode.Expression,
+            ExpressionBuilder.BuilderMode.Expression =>ExpressionBuilder.BuilderMode.FreeType,
+            _ => ExpressionBuilder.BuilderMode.Expression
+        };
+        builder.SetMode(mode);
+    }
+
+    private void navigateUp() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetAboveNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateDown() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetBelowNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateLeft() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetLeftNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateRight() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetRightNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateUpLeft() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetAboveNode()?.GetLeftNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateUpRight() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetBelowNode()?.GetRightNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateDownLeft() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetBelowNode()?.GetLeftNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+    private void navigateDownRight() {
+        var node = Calculator?.GetBuilder()?.Selected;
+        var sibling = node?.GetBelowNode()?.GetRightNode();
+        if (sibling is not null)
+            Calculator?.GetBuilder()?.Select(sibling);
+    }
+
+    private void clickShift() {
+        if (IsCtrl) {
+            this.IsCapsLock = !this.IsCapsLock;
+        } else {
+            this.IsShift = !this.IsShift;
+        }
+        clearCtrl();
+    }
+
+    private void clickEq() {
+        clearModifiers();
+    }
+    private void clickAssign() {
+        clearModifiers();
+    }
+    private void clickCatalog() {
+        Catalog?.Show();
+        clearModifiers();
+    }
+    private void closeCatalog() {
+        Catalog?.Hide();
+    }
+    private void clickMenu() {
+        Calculator?.ShowDocumentMenu();
+    }
+
+    private void clickPow() {
+        if (!IsCtrl) {
+            Calculator?.GetBuilder()?.AddPower();
+        } else {
+            Calculator?.GetBuilder()?.AddNthRoot(null);
+        }
+        clearModifiers();
+    }
+    private void clickSquare() {
+        if (!IsCtrl) {
+            Calculator?.GetBuilder()?.AddPower(2);
+        } else {
+            Calculator?.GetBuilder()?.AddNthRoot(2);
+        }
+        clearModifiers();
+    }
+    private void clickTimes() {
+        Calculator?.GetBuilder()?.AddMultiplication();
+        clearModifiers();
+    }
+    private void clickDivide() {
+        Calculator?.GetBuilder()?.AddDivision();
+        clearModifiers();
+    }
+
+    private void clickEx() {
+        if (IsCtrl) {
+            this.addLn();
+        } else {
+            Calculator?.GetBuilder()?.AddExponential();
+        }
+        clearModifiers();
+    }
+    private void click10x() {
+        if (IsCtrl) {
+            this.addLog();
+        } else {
+            Calculator?.GetBuilder()?.Add10ToThePowerOf();
+        }
+        clearModifiers();
+    }
+    private void clickPlus() {
+        Calculator?.GetBuilder()?.AddAddition();
+        clearModifiers();
+    }
+    private void clickMinus() {
+        Calculator?.GetBuilder()?.AddSubtraction();
+        clearModifiers();
+    }
+
+    private void clickParen() {
+        Calculator?.GetBuilder()?.AddParenthesis();
+        clearModifiers();
+    }
+    private void clickBraces() {
+        clearModifiers();
+    }
+    private void clickDot() {
+        Calculator?.GetBuilder()?.AddDecimal();
+        clearModifiers();
+    }
+    private void clickAns() {
+        if (!IsCtrl) {
+            Calculator?.GetBuilder()?.AddNegate();
+        } else {    
+            Calculator?.GetBuilder()?.AddSymbol("ans");
+        }
+        clearModifiers();
+    }
+    private void clickComma() {
+        Calculator?.GetBuilder()?.AddCharacter(',');
+        clearModifiers();
+    }
+    private void clickReturn() {
+        Calculator?.GetBuilder()?.AddCharacter('\n');
+        clearModifiers();
+    }
+    private void clickSpace() {
+        Calculator?.GetBuilder()?.AddCharacter(' ');
+        clearModifiers();
+    }
+
+    private void clickVar() {
+        if (!IsCtrl) {
+            this.Variables?.Show();
+        } else {
+            this.Calculator?.GetBuilder()?.AddAssignment();
+        }
+        clearModifiers();
+    }
+
+    public void ClearVariables() {
+        this.variables.Clear();
+        StateHasChanged();
+    }
+
+    public System.Collections.ObjectModel.ReadOnlyDictionary<string, Qkmaxware.Cas.IExpression> EnumerateVariables() => this.variables.AsReadOnly();
+    public async Task UpdateVariables(IEnumerable<KeyValuePair<string, Qkmaxware.Cas.IExpression>> assignments) {
+        foreach (var assignment in assignments) {
+            this.variables[assignment.Key] = assignment.Value;
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void clickVariableNamed(string name) {
+        this.Calculator?.GetBuilder()?.AddSymbol(name);
+        this.Variables?.Hide();
+    }
+
+    private async Task clickEnter() {
+        if (Calculator is null) {
+            Console.WriteLine("No calculator found");
+            return;
+        }
+        await this.Calculator.SubmitExpression();
+        clearModifiers();
+    }
+
+    private void clickDelete() {
+        if (!IsCtrl) {
+            Calculator?.GetBuilder()?.Backspace();
+        } else {
+            Calculator?.GetBuilder()?.Clear();
+        }
+        clearModifiers();
+    }
+
+    private void clickDigit(int digit) {
+        if (!this.IsCtrl){
+            Calculator?.GetBuilder()?.AddDigit(digit);
+            clearModifiers();
+        }
+    }
+    private void click9() {
+        clickDigit(9);
+    }
+    private void click8() {
+        clickDigit(8);
+    }
+    private void click7() {
+        clickDigit(7);
+    }
+    private void click6() {
+        clickDigit(6);
+    }
+    private void click5() {
+        clickDigit(5);
+    }
+    private void click4() {
+        clickDigit(4);
+    }
+    private void click3() {
+        clickDigit(3);
+    }
+    private void click2() {
+        clickDigit(2);
+    }
+    private void click1() {
+        clickDigit(1);
+    }
+    private void click0() {
+        clickDigit(0);
+    }
+
+    private void clickLetter(char c) {
+        if (!this.IsCtrl){
+            if (this.IsCaps)
+                c = char.ToUpper(c);
+            Calculator?.GetBuilder()?.AddCharacter(c);
+            clearModifiers();        
+        }
+    }
+    private void clicka() {
+        clickLetter('a');
+    }
+    private void clickb() {
+        clickLetter('b');
+    }
+    private void clickc() {
+        clickLetter('c');
+    }
+    private void clickd() {
+        clickLetter('d');
+    }
+    private void clicke() {
+        clickLetter('e');
+    }
+    private void clickf() {
+        clickLetter('f');
+    }
+    private void clickg() {
+        clickLetter('g');
+    }
+    private void clickh() {
+        clickLetter('h');
+    }
+    private void clicki() {
+        clickLetter('i');
+    }
+    private void clickj() {
+        clickLetter('j');
+    }
+    private void clickk() {
+        clickLetter('k');
+    }
+    private void clickl() {
+        clickLetter('l');
+    }
+    private void clickm() {
+        clickLetter('m');
+    }
+    private void clickn() {
+        clickLetter('n');
+    }
+    private void clicko() {
+        clickLetter('o');
+    }
+    private void clickp() {
+        clickLetter('p');
+    }
+    private void clickq() {
+        clickLetter('q');
+    }
+    private void clickr() {
+        clickLetter('r');
+    }
+    private void clicks() {
+        clickLetter('s');
+    }
+    private void clickt() {
+        clickLetter('t');
+    }
+    private void clicku() {
+        clickLetter('u');
+    }
+    private void clickv() {
+        clickLetter('v');
+    }
+    private void clickw() {
+        clickLetter('w');
+    }
+    private void clickx() {
+        clickLetter('x');
+    }
+    private void clicky() {
+        clickLetter('y');
+    }
+    private void clickz() {
+        clickLetter('z');
+    }
+
+    private void addFunction(string name, Func<Qkmaxware.Cas.IExpression, Qkmaxware.Cas.IExpression> transformer) {
+        var mode = new FunctionInputMode(name, transformer);
+        Calculator?.GetBuilder()?.AddFunction(mode);
+        clearModifiers();
+    }
+    private void addSin() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Sin), transformer: (arg) => Qkmaxware.Cas.Trig.Sin(arg));
+    }
+    private void addCos() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Cos), transformer: (arg) => Qkmaxware.Cas.Trig.Cos(arg));
+    }
+    private void addTan() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Tan), transformer: (arg) => Qkmaxware.Cas.Trig.Tan(arg));
+    }
+    private void addASin() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Asin), transformer: (arg) => Qkmaxware.Cas.Trig.Asin(arg));
+    }
+    private void addACos() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Acos), transformer: (arg) => Qkmaxware.Cas.Trig.Acos(arg));
+    }
+    private void addATan() {
+        addFunction(nameof(Qkmaxware.Cas.Trig.Atan), transformer: (arg) => Qkmaxware.Cas.Trig.Atan(arg));
+    }
+    private void addLog() {
+        addFunction("Log", transformer: (arg) => Qkmaxware.Cas.Log.Log10(arg));
+    }
+    private void addLn() {
+        addFunction(nameof(Qkmaxware.Cas.Log.Ln), transformer: (arg) => Qkmaxware.Cas.Log.Ln(arg));
+    }
+
+    private void addConstant(Constant? constant) {
+        if (constant is not null)
+            Calculator?.GetBuilder()?.AddConstant(constant);
+    }
+
+    private void addAngleConversion() {
+        Calculator?.GetBuilder()?.AddConversion(UOM.Angles);
+    }
+    private void addTemperatureConversion() {
+        Calculator?.GetBuilder()?.AddConversion(UOM.Temperature);
+    }
+
+    private async Task makeMatrix() {
+        var rows = await alert.Ask<int>("Number of ROWs?", "2");
+        var columns = await alert.Ask<int>("Number of COLUMNs", "2");
+
+        Calculator?.GetBuilder()?.AddMatrix(rows, columns);
+    }
+    private void makeDerivative() {
+        Calculator?.GetBuilder()?.AddDerivative();
+    }
+    private void makeIndefIntegral() {
+        Calculator?.GetBuilder()?.AddIndefIntegral();
+    }
+    private void makeDefIntegral() {
+        Calculator?.GetBuilder()?.AddDefIntegral();
+    }
+}

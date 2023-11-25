@@ -1,0 +1,27 @@
+<dialog class="w3-modal @showCss">
+    <div class="w3-modal-content w3-animate-top">
+        <header class="w3-display-container">
+            @Title <button id="Close" class="w3-button w3-display-right" @onclick=Hide>&times;</button>
+        </header>
+        <article>
+            @ChildContent
+        </article>
+    </div>
+</dialog>
+
+@code {
+    [Parameter] public string? Title {get; set;}
+    [Parameter] public RenderFragment? ChildContent {get; set;}
+    private bool shown;
+    private string showCss => shown ? "w3-show" : "w3-hide";
+
+    public void Show() {
+        this.shown = true;
+        StateHasChanged();
+    }
+
+    public void Hide() {
+        this.shown = false;
+        StateHasChanged();
+    }
+}

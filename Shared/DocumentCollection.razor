@@ -1,0 +1,89 @@
+<div id="Documents">
+    <TabView @ref=Tabs FixedHeader=true>
+        @foreach (var doc in this.documents) {
+            <Tab>
+                <Title>@doc.Title</Title>
+                <Content>
+                    <HistoryRenderer History=@(doc.History)></HistoryRenderer>
+                </Content>
+            </Tab>
+        }
+    </TabView>
+    <div class="w3-padding">
+        <div style="padding-left: 1em; padding-right: 1em">
+        <ExpressionBuilder @ref=Builder></ExpressionBuilder>
+        </div>
+    </div>  
+</div>
+
+@code {
+    private List<Document> documents = new List<Document>();
+
+    private TabView? Tabs;
+    private ExpressionBuilder? Builder;
+
+    public ExpressionBuilder? GetBuilder() => Builder;
+
+    public void CloseCurrentDocument() {
+        var index = Tabs?.GetActiveTabIndex() ?? -1;
+        if (index >= 0 && index < documents.Count) {
+            this.documents.RemoveAt(index);
+            StateHasChanged();
+        }
+    }
+
+    public void NextDoc() {
+        var index = Tabs?.GetActiveTabIndex() ?? -1;
+        var tabs = Tabs?.TabCount() ?? 0;
+        if (tabs == 0)
+            return;
+
+        var next = index + 1;
+        if (next >= tabs) {
+            next = 0;
+        }
+        Tabs?.Select(next);
+    }
+
+    public void PrevDoc() {
+        var index = Tabs?.GetActiveTabIndex() ?? -1;
+        var tabs = Tabs?.TabCount() ?? 0;
+        if (tabs == 0)
+            return;
+
+        var next = index - 1;
+        if (next < 0) {
+            next = tabs - 1;
+        }
+        Tabs?.Select(next);
+    }
+
+    public Document? GetActiveDocument() {
+        var index = Tabs?.GetActiveTabIndex() ?? -1;
+        if (index >= 0 && index < documents.Count) {
+            return documents[index];
+        } else {
+            return null;
+        }
+    }
+
+    public void AddDocument(Document doc) {
+        documents.Add(doc);
+        this.StateHasChanged();
+    }
+
+    public Document MakeDocument(string? name = null, bool autoselect = false) {
+        Document d = new Document();
+        d.Title = name ?? $"New Document ({documents.Count})";
+        AddDocument(d);
+        Tabs?.Select(this.documents.Count - 1);
+        return d;
+    }
+
+    public async Task RepaintAsync() {
+        await InvokeAsync(StateHasChanged);
+    }
+    public void Repaint() {
+        StateHasChanged();
+    }
+}

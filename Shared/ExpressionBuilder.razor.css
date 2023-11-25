@@ -1,0 +1,49 @@
+/*.Expression {
+    display: inline-block;
+    position: relative;
+    margin-left: 1.5em;
+}
+
+.Expression:before {
+    content: "\00a0\203A";
+    border-color: white;
+    position: absolute;
+    top: 0;
+    border-width: 2px;
+    border-style: solid;
+    border-right: 0;
+    margin-left: -1.5em;
+    width: 6px;
+    height: 100%;
+}
+
+.FreeType {
+    white-space: pre;
+}*/
+
+@media print {
+    #Builder {
+        display: none !important;
+    }
+}
+
+.inactive {
+    color: rgb(77, 77, 77);
+}
+.active {
+    color: rgb(48, 140, 170);
+}
+
+.Cursor::after {
+    content: "";
+    width: 5px;
+    height: 20px;
+    background: #ec7fff;
+    display: inline-block;
+    animation: cursor-blink 1.5s steps(2) infinite;
+}
+@keyframes cursor-blink {
+    0% {
+      opacity: 0;
+    }
+}

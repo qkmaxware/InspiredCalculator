@@ -1,0 +1,25 @@
+@using Qkmaxware.Cas
+
+<ol id="History" class="w3-ul">
+    @if (History is not null) {
+        @foreach (var record in History) {
+            <li class='@(record.InputExpression is not null ? "expr" : string.Empty)'>
+                <span class="input">
+                    @if (record.InputExpression is not null) {
+                        <ExpressionBuilderNode Builder=null Node=record.InputExpression></ExpressionBuilderNode>
+                    } else {
+                        <text>@record.RawText</text>
+                    }
+                </span>
+                <div class="result">
+                    <ExpressionRenderer Expression=record.Result></ExpressionRenderer>
+                </div>
+            </li>
+        }
+    }
+</ol>
+
+@code {
+    [Parameter] public IEnumerable<History.Record>? History {get; set;}
+
+}

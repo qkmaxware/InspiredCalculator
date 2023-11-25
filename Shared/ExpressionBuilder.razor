@@ -1,0 +1,532 @@
+@using Qkmaxware.Cas
+
+<div id="Builder">
+<div>
+    <span class='mode @(this.Mode == BuilderMode.Expression ? "active" : "inactive")'>math</span>
+    <span class='mode @(this.Mode == BuilderMode.FreeType ? "active" : "inactive")'>text</span> 
+</div>
+@switch (Mode) {
+    case BuilderMode.Expression:
+        <section class="Expression">
+            <ExpressionBuilderNode Builder=@this Node=@root></ExpressionBuilderNode>
+        </section>
+        break;
+    case BuilderMode.FreeType:
+        <section class="FreeType">
+            @text<span class="Cursor"></span>
+        </section>
+        break;
+}
+</div>
+
+@code {
+    public enum BuilderMode {
+        Expression, FreeType
+    } 
+    public BuilderMode Mode {get; private set;} = BuilderMode.Expression;
+    public void SetMode (BuilderMode mode){
+        this.Mode = mode;
+        StateHasChanged();
+    }
+    private TreeBuilderNode root = new TreeBuilderNode();
+
+    private TreeBuilderNode? selected;
+
+    public TreeBuilderNode Selected => selected ?? root;
+
+    private System.Text.StringBuilder text = new System.Text.StringBuilder();
+    public IExpression? MakeExpression(SideEffects sideEffects) => root.MakeExpression(sideEffects);
+    public TreeBuilderNode? GetInputExpression() => root;
+    public string GetText() => this.text.ToString();
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        this.selected = root;
+    }
+
+    public void Select(TreeBuilderNode? node) {
+        this.selected = node;
+        StateHasChanged();
+    }
+    public bool IsSelected(TreeBuilderNode? node) {
+        return ReferenceEquals(this.selected, node);
+    }
+
+    public void Clear() {
+        this.root = new TreeBuilderNode();
+        this.Select(this.root);
+        this.text.Clear();
+        StateHasChanged();
+    }
+
+    public void AddDigit(int digit) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(digit); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        if (node.Mode is DirectInputMode input) {
+            input.AddDigit(digit);
+        }
+        else if (node.Mode is null) {
+            var mode = new AtomInputMode();
+            mode.AddDigit(digit);
+            node.ReconfigureMode(mode);
+        }
+        StateHasChanged();
+    }
+    public void AddCharacter(char c) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(c); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        if (node.Mode is DirectInputMode input) {
+            input.AddCharacter(c);
+        }
+        else if (node.Mode is null) {
+            var mode = new AtomInputMode();
+            mode.AddCharacter(c);
+            node.ReconfigureMode(mode);
+        }
+        StateHasChanged();
+    }
+    public void AddSymbol(string s) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(s); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        if (node.Mode is DirectInputMode input) {
+            input.Clear();
+            foreach (var character in s) {
+                input.AddCharacter(character);
+            }
+        }
+        else if (node.Mode is null) {
+            var mode = new AtomInputMode();
+            foreach (var character in s) {
+                mode.AddCharacter(character);
+            }
+            node.ReconfigureMode(mode);
+        }
+        StateHasChanged();
+    }
+
+    public void AddDecimal() {
+        AddCharacter('.');
+    }
+
+    public void AddConstant(Constant constant) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(constant.RootSymbol); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        if (node.Mode is null) {
+            var mode = new ConstantInputMode(constant);
+            node.ReconfigureMode(mode);
+        }
+        StateHasChanged();
+    }
+
+    public void AddMatrix(int rows, int columns) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('[');
+            for (var i = 0; i < rows; i++) {
+                if (i != 0)
+                    text.Append(';');
+                for (var j = 0; j < columns; j++) {
+                    if (j != 0)
+                        text.Append(' ');
+                    text.Append(',');
+                }
+            }
+            text.Append(']');
+            StateHasChanged(); return;
+        }
+
+        rows = Math.Max(1, rows);
+        columns = Math.Max(1, columns);
+
+        var node = Selected;
+        var mode = new MatrixInputMode(rows, columns);
+        node.ReconfigureMode(mode);
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
+
+    public void AddDerivative() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("d/dx");
+            StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var mode = new DerivativeInputMode();
+        node.ReconfigureMode(mode);
+        var symbol = new TreeBuilderNode(); symbol.ReconfigureMode(new AtomInputMode("x"));
+        node.SetChild(1, symbol);
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
+
+    public void AddIndefIntegral() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("∫");
+            StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var mode = new IndefIntegralInputMode();
+        node.ReconfigureMode(mode);
+        var symbol = new TreeBuilderNode(); symbol.ReconfigureMode(new AtomInputMode("x"));
+        node.SetChild(1, symbol);
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
+
+    public void AddDefIntegral() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("∫_x={}^{}  dx");
+            StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var mode = new DefIntegralInputMode();
+        node.ReconfigureMode(mode);
+        var symbol = new TreeBuilderNode(); symbol.ReconfigureMode(new AtomInputMode("x"));
+        node.SetChild(3, symbol);
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
+
+    public void Backspace() {
+        if (Mode == BuilderMode.FreeType) {
+            if (text.Length > 0)
+                text.Length -= 1; 
+            StateHasChanged(); 
+            return;
+        }
+
+        var node = Selected;
+        if (node.Mode is DirectInputMode input && input.InputLength > 1) {
+            // 1. Deleting parts of a number/symbol
+            input.DeleteFromBack();
+        } 
+        else if (node.Mode is null) {
+            // 3. Deleting a whole node
+            this.Select(node.GetParent());
+        }
+        else {
+            // 2. Clearing a node to be ready for deletion
+            node.ReconfigureMode(null);
+        }
+        StateHasChanged();
+    }
+
+    public void AddParenthesis() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("()"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new ParenthesizedInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+
+    public void AddConversion(Quantity quantity) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("convert " + quantity.Name); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new UnitConversionInputNode(quantity); 
+        mode.ToUnit = quantity.BaseUnit.Name;
+        mode.FromUnit = quantity.BaseUnit.Name;
+        op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+
+    public void AddAssignment() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(":="); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new AssignmentInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+    public void AddAddition() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('+'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new AddOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddSubtraction() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('-'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new SubOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddMultiplication() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('×'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new MulOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+    public void AddNegate() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('-'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new MulOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        var negativeOne = new TreeBuilderNode();
+        negativeOne.ReconfigureMode(new AtomInputMode("-1"));
+        op.SetChild(0, negativeOne);
+
+        op.SetChild(1, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddDivision() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('÷'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new DivOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddPower() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('^'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new PowOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddNthRoot(int? root) {
+        if (Mode == BuilderMode.FreeType) {
+            if (root.HasValue) {
+                text.Append(root.Value);
+            }
+            text.Append('√'); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new RootOperatorInputMode(); op.ReconfigureMode(mode);
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(1, node);
+
+        if (root.HasValue) {
+            var leaf = new TreeBuilderNode();
+            var value = new AtomInputMode(root.Value); leaf.ReconfigureMode(value);
+            op.SetChild(0, leaf);
+        }
+
+        if (root.HasValue) {
+            this.Select(op.TryGetChild(1) ?? op);
+        } else {
+            this.Select(op.TryGetChild(0) ?? op);
+        }
+    }
+    public void AddPower(int pow) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('^'); text.Append(pow); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new PowOperatorInputMode(); op.ReconfigureMode(mode);
+        var exp = op.GetChild(1);
+        exp.ReconfigureMode(new AtomInputMode(pow));
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+
+    public void AddExponential() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("e^"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new PowOperatorInputMode(); op.ReconfigureMode(mode);
+        var exp = op.GetChild(0);
+        exp.ReconfigureMode(new AtomInputMode("e"));
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(1, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void Add10ToThePowerOf() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("10^"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new PowOperatorInputMode(); op.ReconfigureMode(mode);
+        var exp = op.GetChild(0);
+        exp.ReconfigureMode(new AtomInputMode(10));
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(1, node);
+        this.Select(op.TryGetChild(1) ?? op);
+    }
+
+    public void AddFunction(FunctionInputMode mode) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(mode.FunctionName + "()"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        op.ReconfigureMode(mode);
+
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+}
