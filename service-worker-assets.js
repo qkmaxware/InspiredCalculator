@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-GHuLYNOflILmetMp04d+V3XOeLxUJ\/5Nf9szc0+6Yps=",
+      "hash": "sha256-bR76lO10kheClUeEWS7Kht7pY\/RR3SFJOZSBlX\/mc5k=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -41,7 +41,7 @@
       "url": "_framework\/Cas.dll"
     },
     {
-      "hash": "sha256-YtI1ihvJhdvkglPBUl0CAjaug00oRCLiLE+0ocs4v1o=",
+      "hash": "sha256-yvXgWn3WEJ+cF\/ZgIFbHxrhO4VXBGWDDZsu51MbemvI=",
       "url": "_framework\/InspiredCalculator.dll"
     },
     {
@@ -121,7 +121,7 @@
       "url": "_framework\/System.Console.dll"
     },
     {
-      "hash": "sha256-i53K6w4Vt23x+FMXqu61zmwKl+da3KZOJtGGQFsfiSY=",
+      "hash": "sha256-U1WE0gj7Hznou\/w3VAmKsD31AGDN2AHs+a+b+xRoxKw=",
       "url": "_framework\/System.Linq.dll"
     },
     {
@@ -365,5 +365,5 @@
       "url": "js\/utils.js"
     }
   ],
-  "version": "O2fog69t"
+  "version": "wO9MLk90"
 };
