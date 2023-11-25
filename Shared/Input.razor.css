@@ -5,6 +5,11 @@
     }
 }
 
+input {
+    background-color: transparent;
+    color: white;
+}
+
 table {
     width: 100%;
     table-layout: fixed;
@@ -78,6 +83,27 @@ button.right {
     }
     #Input {
         font-size: 80%;
+    }
+}
+
+.show-short {
+    display: none;
+}
+@media (max-height: 640px) {
+    button {
+        padding: 2px;
+    }
+    a.w3-button {
+        padding: 2px;
+    }
+    #Input {
+        font-size: 80%;
+    }
+    .hide-short  {
+        display: none !important;
+    }
+    .show-short {
+        display: block !important;
     }
 }
 

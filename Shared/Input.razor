@@ -138,7 +138,7 @@
                 </div>
             </div>
             <div class="w3-col s2 right-align">
-                <a href="" target="_blank" class="w3-button full"><img src="icons/help.svg" class="icon"> help</a>
+                <a href="https://github.com/qkmaxware/InspiredCalculator/wiki" target="_blank" class="w3-button full"><img src="icons/help.svg" class="icon"> help</a>
             </div>
         </div>
         <div class="w3-row">
@@ -193,7 +193,7 @@
                 <td class="left-align">
                     <label>&nbsp;</label>
                     <div class="w3-dropdown-hover full">
-                        <button class="w3-button full right">trig&rtri;</button>
+                        <button class="w3-button full">trig&rtri;</button>
                         <div class="w3-dropdown-content w3-card-4">
                             <button class="w3-button flat" @onclick=addSin>Sin</button>
                             <button class="w3-button flat" @onclick=addCos>Cos</button>
@@ -272,7 +272,7 @@
             </tr>
         </table>
     </div>
-    <div id="Keyboard" class="@(IsCaps ? "caps-lock" : "caps-none")">
+    <div id="Keyboard" class="hide-short @(IsCaps ? "caps-lock" : "caps-none")">
         <table>
             <tr>
                 <td class="left-align">
@@ -340,6 +340,14 @@
             </tr>
         </table>
     </div>
+    @*<div id="RawKeyboard" class="show-short w3-padding w3-row">
+        <div class="w3-col w3-right" style="width: 64px">
+            <button class="w3-button" style="width: 100%" @onclick=submitRawText><img src="icons/keyboard.svg" class="icon large"/></button>
+        </div>
+        <div class="w3-rest">
+            <input type="text" placeholder="keyboard" class="w3-input" @bind=rawKeyboard>
+        </div>
+    </div>*@
 </div>
 
 @code {
@@ -735,6 +743,13 @@
     }
     private void click0() {
         clickDigit(0);
+    }
+
+    private string? rawKeyboard;
+    private void submitRawText() {
+        if (rawKeyboard is not null)
+            Calculator?.GetBuilder()?.AddSymbol(rawKeyboard);
+        this.rawKeyboard = null;
     }
 
     private void clickLetter(char c) {
