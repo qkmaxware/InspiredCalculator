@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-EKHiwO5nzU3fr4xpqUCHRrzHI39TXNUwEbwP\/3V8\/Bo=",
+      "hash": "sha256-pDLCmo2KouqpMMcY\/cg5kupavVy972du\/ElYgQXEsbM=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -41,7 +41,7 @@
       "url": "_framework\/Cas.dll"
     },
     {
-      "hash": "sha256-oa5W9EOCqgA+CFL1XnviOGTahA\/hwFlMqkP7eTfJofw=",
+      "hash": "sha256-9exdpy7hjl1rpGygCxyFhy3Jn7jU3Q+S1ijI\/LGw2Wg=",
       "url": "_framework\/InspiredCalculator.dll"
     },
     {
@@ -137,7 +137,7 @@
       "url": "_framework\/System.Net.Primitives.dll"
     },
     {
-      "hash": "sha256-t1lKgsR7fqvnep168qg2SjX2nr+4Jf98jz2s44mQ0o0=",
+      "hash": "sha256-qEDZr0NXgXs1G5iryvxbXh8BbslPnKSKAVsFrEY91t0=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -145,7 +145,7 @@
       "url": "_framework\/System.Private.Uri.dll"
     },
     {
-      "hash": "sha256-grKdqFx2CM1ETXeJmHBYmJCtyLPEHaCMJzm9Gbpoc2E=",
+      "hash": "sha256-GHVMS9vdtNEjOLFVWcv+0iTQsdzIhP2\/B8HXADvw6UE=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -333,6 +333,10 @@
       "url": "icons\/matrix.2x2.svg"
     },
     {
+      "hash": "sha256-E6MPDfsPlVzYA10BNjnXbx0tRaPrJCbsbijhZhc\/Ngk=",
+      "url": "icons\/matrix.identity.svg"
+    },
+    {
       "hash": "sha256-baIKeyW1ZxkMkvrQY\/8l3NxowZMXV1c3fnPryEuFW0M=",
       "url": "icons\/menu.svg"
     },
@@ -369,5 +373,5 @@
       "url": "js\/utils.js"
     }
   ],
-  "version": "PkvPOTFd"
+  "version": "howc6F3o"
 };
