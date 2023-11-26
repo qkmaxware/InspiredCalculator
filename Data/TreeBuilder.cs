@@ -132,7 +132,7 @@ public class DefIntegralInputMode : InputMode {
         if (expr is null)
             throw new ArgumentException("Missing expression to integrate.");
         
-        throw new NotImplementedException();
+        return expr.Integrate(s, lower, upper);
     }
 }
 

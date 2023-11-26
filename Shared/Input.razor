@@ -8,6 +8,9 @@
                 <Content>
                     <Accordion Title="Number">
                         <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.addReal(); this. closeCatalog(); })><span class="symbol">real</span> Extract the real component of a complex number</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.addImm(); this. closeCatalog(); })><span class="symbol">imm</span> Extract the imaginary component of a complex number</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { this.addArg(); this. closeCatalog(); })><span class="symbol">arg</span> Extract the argument of a complex number</button>
                             <button class="w3-button w3-bar-item" @onclick=@(() => { this.clickEx(); this. closeCatalog(); })><span class="symbol">e<sup>x</sup></span> Exponential</button>
                             <button class="w3-button w3-bar-item" @onclick=@(() => { this.addLn(); this. closeCatalog(); })><span class="symbol">ln</span> Natural Logarithm</button>
                             <button class="w3-button w3-bar-item" @onclick=@(() => { this.click10x(); this. closeCatalog(); })><span class="symbol">10<sup>x</sup></span> Power of Ten</button>
@@ -25,7 +28,9 @@
                         </div>
                     </Accordion>
                     <Accordion Title="Matrix">
-                        Some matrix functions
+                        <div class="w3-bar-block">
+                            <button class="w3-button w3-bar-item" @onclick=@(() => { addTranspose(); closeCatalog(); })><span class="symbol">transpose</span> Transposition of a matrix</button>
+                        </div>
                     </Accordion>
                 </Content>
             </Tab>
@@ -867,6 +872,18 @@
     }
     private void addLn() {
         addFunction(nameof(Qkmaxware.Cas.Log.Ln), transformer: (arg) => Qkmaxware.Cas.Log.Ln(arg));
+    }   
+    private void addArg() {
+        addFunction(nameof(Qkmaxware.Cas.Complex.Arg), transformer: (arg) => Qkmaxware.Cas.Complex.Arg(arg));
+    }
+    private void addReal() {
+        addFunction("real", transformer: (arg) => Qkmaxware.Cas.Complex.ExtractReal(arg));
+    }
+    private void addImm() {
+        addFunction("imm", transformer: (arg) => Qkmaxware.Cas.Complex.ExtractImaginary(arg));
+    }
+    private void addTranspose() {
+        addFunction(nameof(Qkmaxware.Cas.Matrix.Transpose), transformer: (arg) => Qkmaxware.Cas.Matrix.Transpose(arg));
     }
 
     private void addConstant(Constant? constant) {
