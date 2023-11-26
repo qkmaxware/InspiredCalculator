@@ -95,10 +95,10 @@
                 <section class="numerator">d</section>
                 <br> 
                 <section class="denominator">
-                    d<ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode>
+                    d<ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode>
                 </section>
             </section>
-            <section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></section>
+            <section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode></section>
             break;
         case IndefIntegralInputMode integral:
             <text>∫</text><section class="parenthesis"><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(0)></ExpressionBuilderNode></section><text>d</text><ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(1)></ExpressionBuilderNode>

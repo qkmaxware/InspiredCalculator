@@ -9,6 +9,10 @@ public class Conversion {
         this.ToBase = toBase;
         this.FromBase = fromBase;
     }
+    public Conversion(double factor) : this(
+        toBase: (arg) => new Multiplication(arg, new Real(factor)),
+        fromBase: (arg) => new Division(arg, new Real(factor))
+    ) {}
 }
 
 public class Unit {

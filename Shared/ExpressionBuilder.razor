@@ -156,6 +156,39 @@
         StateHasChanged();
     }
 
+    public void AddMatrixIdentity(int size) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('[');
+            for (var i = 0; i < size; i++) {
+                if (i != 0)
+                    text.Append(';');
+                for (var j = 0; j < size; j++) {
+                    text.Append(j == i ? '1' : '0');
+                    if (j != 0) {
+                        text.Append(' ');
+                    }
+                    text.Append(',');
+                }
+            }
+            text.Append(']');
+            StateHasChanged(); return;
+        }
+
+        var rows = Math.Max(1, size);
+        var columns = Math.Max(1, size);
+
+        var node = Selected;
+        var mode = new MatrixInputMode(rows, columns);
+        node.ReconfigureMode(mode);
+        for (var i = 0; i < size; i++) {
+            for (var j = 0; j < size; j++) {
+                var child = node.GetChild(mode.Get1dIndex(i, j));
+                child.ReconfigureMode(new AtomInputMode(i == j ? "1" : "0"));
+            }
+        }
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
     public void AddDerivative() {
         if (Mode == BuilderMode.FreeType) {
             text.Append("d/dx");
@@ -166,8 +199,8 @@
         var mode = new DerivativeInputMode();
         node.ReconfigureMode(mode);
         var symbol = new TreeBuilderNode(); symbol.ReconfigureMode(new AtomInputMode("x"));
-        node.SetChild(1, symbol);
-        this.Select(node.TryGetChild(0) ?? node);
+        node.SetChild(0, symbol);
+        this.Select(node.TryGetChild(1) ?? node);
         StateHasChanged();
     }
 

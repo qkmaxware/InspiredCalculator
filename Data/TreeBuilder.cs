@@ -49,6 +49,11 @@ public class MatrixInputMode : InputMode {
     public int Get1dIndex(int row, int column) {
         return (column + row * this.Columns);
     }
+    public (int row, int column) Get2dIndex(int ind) {
+        var y = ind / this.Columns;
+        var x = ind % this.Columns;
+        return (row: y, column: x);
+    }
     public override IExpression MakeExpression(SideEffects sideEffects, IExpression?[] subexpressions) {
         if (subexpressions.Length != this.SubExpressionCount()) {
             throw new ArgumentException("Invalid number of matrix elements.");
@@ -77,8 +82,8 @@ public class DerivativeInputMode : InputMode {
             throw new ArgumentException("Invalid number of expressions.");
         }
 
-        var symbol = subexpressions[1];
-        var expr = subexpressions[0];
+        var symbol = subexpressions[0];
+        var expr = subexpressions[1];
 
         if (symbol is not Symbol s) {
             throw new ArgumentException("Derivative symbol must not be an expression.");
@@ -358,7 +363,21 @@ public class TreeBuilderNode {
     public TreeBuilderNode GetAboveNode() {
         if (Mode is DivOperatorInputMode) {
             return this.GetChild(0);
-        } else {
+        } 
+        if (parent is not null && (parent?.Mode is MatrixInputMode mtx)) {
+            var d1 = Array.IndexOf(parent.children, this);
+            if (d1 == -1) {
+                return parent.GetAboveNode();
+            }
+
+            var (row, col) = mtx.Get2dIndex(d1);
+            if (row == 0) {
+                return parent;
+            } else {
+                return parent.children[mtx.Get1dIndex(row - 1, col)];
+            }
+        }
+        else {
             var parent = this.GetParent();
             if (parent is not null) {
                 return parent.GetAboveNode();
@@ -370,7 +389,21 @@ public class TreeBuilderNode {
     public TreeBuilderNode? GetBelowNode() {
         if (Mode is DivOperatorInputMode) {
             return this.GetChild(1);
-        } else {
+        }
+        if (parent is not null && (parent?.Mode is MatrixInputMode mtx)) {
+            var d1 = Array.IndexOf(parent.children, this);
+            if (d1 == -1) {
+                return parent.GetBelowNode();
+            }
+
+            var (row, col) = mtx.Get2dIndex(d1);
+            if (row == (mtx.Rows - 1)) {
+                return parent;
+            } else {
+                return parent.children[mtx.Get1dIndex(row + 1, col)];
+            }
+        }
+        else {
             var parent = this.GetParent();
             if (parent is not null) {
                 return parent.GetBelowNode();
@@ -391,33 +424,22 @@ public class TreeBuilderNode {
         else {
             // Go to the previous node's furthest right child
             var left_sibling = parent.children[index - 1];
-            return left_sibling.GetLeftmostChild();
+            return left_sibling.GetRightmostChild();
         }
     }
     public TreeBuilderNode GetRightNode() {
-        if (this.ChildrenCount > 0) {
-            // Dive into the node
-            return this.children[0];
-        } 
-
-        // Is a solo node
         var parent = this.GetParent();
         if (parent is null)
             return this;
-    
-        // Fallback case
         var index = Array.IndexOf(parent.children, this);
-        if (index == -1)
-            return parent;
-
-        // If I am the last node of my parent
         if (index >= parent.children.Length - 1) {
-            // Go up to the parent :)
+            // Exit the node
             return parent;
-        }   
-        // If I am a regular node
+        }
         else {
-            return parent.children[index + 1].GetLeftmostChild();
+            // Go to the previous node's furthest right child
+            var right_sibling = parent.children[index + 1];
+            return right_sibling.GetLeftmostChild();
         }
     }
 

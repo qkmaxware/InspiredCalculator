@@ -38,8 +38,12 @@
                 <Title>°C/°F</Title>@*Values for standard measurement units*@
                 <Content>
                     <div class="w3-bar-block">
-                        <button class="w3-button w3-bar-item" @onclick=@(() => { addAngleConversion(); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Angles.Name</sub></span> Convert between different angular measurements.</button>
-                        <button class="w3-button w3-bar-item" @onclick=@(() => { addTemperatureConversion(); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Temperature.Name</sub></span> Convert between different temperature measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Angles); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Angles.Name</sub></span> Convert between different angular measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Temperature); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Temperature.Name</sub></span> Convert between different temperature measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Length); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Length.Name</sub></span> Convert between different length measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Mass); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Mass.Name</sub></span> Convert between different mass measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Current); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Current.Name</sub></span> Convert between different electrical current measurements.</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Time); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Time.Name</sub></span> Convert between different time measurements.</button>
                     </div>
                 </Content>
             </Tab>
@@ -92,7 +96,8 @@
                 <Content>
                     <Accordion Title="Matrix">
                         <div class="w3-bar-block">
-                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrix(); closeCatalog(); })><img src="icons/matrix.2x2.svg" class="icon large"> Create an NxN matrix</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrix(); closeCatalog(); })><img src="icons/matrix.2x2.svg" class="icon large"> Create an empty NxM matrix</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrixIdentity(); closeCatalog(); })><img src="icons/matrix.identity.svg" class="icon large"> Create a NxN identity matrix</button>
                         </div>
                     </Accordion>
                     <Accordion Title="Calculus">
@@ -268,7 +273,7 @@
             <tr>
                 <td class="left-align">
                     <label>&nbsp;</label>
-                    <button class="w3-button full" @onclick=clickParen>()</button>
+                    <button class="w3-button full" @onclick=clickParen>( )</button>
                 </td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=click0>&nbsp;0&nbsp;</button></td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=clickDot>&nbsp;.&nbsp;</button></td>
@@ -891,11 +896,8 @@
             Calculator?.GetBuilder()?.AddConstant(constant);
     }
 
-    private void addAngleConversion() {
-        Calculator?.GetBuilder()?.AddConversion(UOM.Angles);
-    }
-    private void addTemperatureConversion() {
-        Calculator?.GetBuilder()?.AddConversion(UOM.Temperature);
+    private void addConversion(Quantity quanta) {
+        Calculator?.GetBuilder()?.AddConversion(quanta);
     }
 
     private async Task makeMatrix() {
@@ -903,6 +905,11 @@
         var columns = await alert.Ask<int>("Number of COLUMNs", "2");
 
         Calculator?.GetBuilder()?.AddMatrix(rows, columns);
+    }
+    private async Task makeMatrixIdentity() {
+        var rows = await alert.Ask<int>("Number of ROWs/COLUMNs?", "2");
+
+        Calculator?.GetBuilder()?.AddMatrixIdentity(rows);
     }
     private void makeDerivative() {
         Calculator?.GetBuilder()?.AddDerivative();
