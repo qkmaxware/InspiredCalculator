@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-pDLCmo2KouqpMMcY\/cg5kupavVy972du\/ElYgQXEsbM=",
+      "hash": "sha256-BWo65wmebktB\/8TzY41tclnz4O5xFMddkM1erNeJdVk=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -41,19 +41,19 @@
       "url": "_framework\/Cas.dll"
     },
     {
-      "hash": "sha256-9exdpy7hjl1rpGygCxyFhy3Jn7jU3Q+S1ijI\/LGw2Wg=",
+      "hash": "sha256-pGY26COLHjEt2hZXZlvZhdKJeq9SEJp7uocrTbaZcTk=",
       "url": "_framework\/InspiredCalculator.dll"
     },
     {
-      "hash": "sha256-t3yMB1qLcTBQrZMlvE1d4mtty8HBDX2U+5lfpiXgIB8=",
+      "hash": "sha256-791AuHFzfucpYbstQoQJxafiVsAtC7aBFfoK\/VU29E4=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
-      "hash": "sha256-frOJbnliohgxNCA1JD0Mllw\/\/FWQQRGaBtiog9MkALM=",
+      "hash": "sha256-3zQvDg1DaJKUuQhM43884YPOa\/0jSqbBl70yTEva+70=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.dll"
     },
     {
-      "hash": "sha256-91GZDuxfk21LeqhJDRTF5qrWydHXMlw1hAHzBSInttY=",
+      "hash": "sha256-8DoJrRX6nRTBkcyndvGcib+RscaEDKjz\/GljZbiwzWA=",
       "url": "_framework\/Microsoft.AspNetCore.Components.WebAssembly.dll"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.Extensions.Primitives.dll"
     },
     {
-      "hash": "sha256-7SUNHRT+iTbedfKYQEVFXLfKMxlwPHEU5SSQ8Wi9NUk=",
+      "hash": "sha256-ApextRUmG0ycjpYmHUwdpYT5fBhHrhhkSW7XARsaQ\/0=",
       "url": "_framework\/Microsoft.JSInterop.dll"
     },
     {
@@ -137,7 +137,7 @@
       "url": "_framework\/System.Net.Primitives.dll"
     },
     {
-      "hash": "sha256-qEDZr0NXgXs1G5iryvxbXh8BbslPnKSKAVsFrEY91t0=",
+      "hash": "sha256-y7XSj8ZmDIXTNUym8FQwXBQf\/p921LEJLlNHIJDXO60=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -145,7 +145,7 @@
       "url": "_framework\/System.Private.Uri.dll"
     },
     {
-      "hash": "sha256-GHVMS9vdtNEjOLFVWcv+0iTQsdzIhP2\/B8HXADvw6UE=",
+      "hash": "sha256-QZsRHGi\/k23f2M8z364X6cVO\/gmWvx\/7GNpCBZFD640=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -165,7 +165,7 @@
       "url": "_framework\/System.Text.RegularExpressions.dll"
     },
     {
-      "hash": "sha256-I\/wbODknXR1PI4VfTx9IeYjFpLTsx\/eaxXeUGN0517Q=",
+      "hash": "sha256-WVkX5ukIqOKDK9PJwdYk93UguTdo0j0lqWNLBr3mmg0=",
       "url": "InspiredCalculator.styles.css"
     },
     {
@@ -289,6 +289,10 @@
       "url": "icons\/code.svg"
     },
     {
+      "hash": "sha256-HWO9Os9Wuj5NxNsZKdFGwpC4SqhSRIXqRNXfXLmQMTA=",
+      "url": "icons\/csv.svg"
+    },
+    {
       "hash": "sha256-\/pHdLwkVlVbzO\/Bv1vHr1QsTLyGzrsIHdvLhf63jwlI=",
       "url": "icons\/cursor.svg"
     },
@@ -349,6 +353,14 @@
       "url": "icons\/page.svg"
     },
     {
+      "hash": "sha256-7234H\/dIihZjRSnrPJ0saeVyDBQmqlSnulLeyvzYkSA=",
+      "url": "icons\/plot.2d.svg"
+    },
+    {
+      "hash": "sha256-gNyHfQwFzc3viKom\/dwkhsrGNCHYQgbCpU\/zbIZZ9zU=",
+      "url": "icons\/plot.3d.svg"
+    },
+    {
       "hash": "sha256-sbgumResrcUYXSl5pjfOC7TMDVucQu991ICz4b7Kf+8=",
       "url": "icons\/tab.svg"
     },
@@ -361,17 +373,29 @@
       "url": "icons\/x.svg"
     },
     {
-      "hash": "sha256-lVcc84MjFqt6JXNwPJjwGZONrAWUWE2iPwnZHsSuV6o=",
+      "hash": "sha256-IaifXgVtQpXMvtOcrcQE3PwJa2skGbxWckbDBAe48E4=",
       "url": "index.html"
     },
     {
-      "hash": "sha256-YLko\/XtpYCuJ+WFAZENSsyMeCLXIaHgKH+0L50pX\/V4=",
+      "hash": "sha256-7YYp+Tkcyps44tYZb4FvYbxdZhrxl2stZYXV7VILzXs=",
       "url": "js\/keyboard-intercept.js"
     },
     {
-      "hash": "sha256-L3qiSnYmgiJCp\/BTXM4rGRJstMsrCGRm2qNac+xJS+k=",
+      "hash": "sha256-0\/kmbZmlhimcXXlGZvJkAtxxiebzJSBQuanz0XFZfwY=",
       "url": "js\/utils.js"
+    },
+    {
+      "hash": "sha256-+5Uk3AD6\/1pjgoll906leEaa4KJ74FOs+lZO96mo71I=",
+      "url": "lib\/plotly\/github.url"
+    },
+    {
+      "hash": "sha256-f0kw66j4VB2+wo3KW9X3h\/ju8c3gNprJZXtwvtIws+A=",
+      "url": "lib\/plotly\/plotly-2.27.0.min.js"
+    },
+    {
+      "hash": "sha256-rSTQeRgzwmFnFMKmVs0kiFb+57CfdiapVW9MwS7nWAo=",
+      "url": "lib\/plotly\/Readme.md"
     }
   ],
-  "version": "howc6F3o"
+  "version": "hffm3OKq"
 };
