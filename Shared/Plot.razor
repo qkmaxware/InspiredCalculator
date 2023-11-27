@@ -1,0 +1,18 @@
+@using InspiredCalculator.Js
+@inject Plotly plotly
+
+<div class="plot" @ref=div></div>
+
+@code {
+    private ElementReference div;
+
+    [Parameter]
+    public Plotly.Trace[]? Data { get; set; }
+
+    [Parameter]
+    public Plotly.Layout? Layout { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        await plotly.Draw(div, Data, Layout);
+    }
+}

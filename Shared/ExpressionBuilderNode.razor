@@ -131,6 +131,32 @@
                 </section>
             </section>
             break;
+        case Plot2dInputMode plot2d:
+            <section class="function">
+                plot2d
+                <section class="parenthesis">
+                    @for (var i = 0; i < Node.ChildrenCount; i++) {
+                        if (i != 0) {
+                            <text>, </text>
+                        }
+                        <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(i)></ExpressionBuilderNode>
+                    }
+                </section>
+            </section>
+            break;
+        case Plot3dInputMode plot3d:
+            <section class="function">
+                plot3d
+                <section class="parenthesis">
+                    @for (var i = 0; i < Node.ChildrenCount; i++) {
+                        if (i != 0) {
+                            <text>, </text>
+                        }
+                        <ExpressionBuilderNode Builder=@Builder Node=@Node.GetChild(i)></ExpressionBuilderNode>
+                    }
+                </section>
+            </section>
+            break;
     }
 </section>
 

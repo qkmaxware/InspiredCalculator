@@ -38,3 +38,12 @@
     color: rgb(48, 140, 170);
     border-color: rgb(48, 140, 170) !important;
 }
+
+#History .attachments {
+    text-align: right;
+}
+#History .attachment {
+    margin-left: auto;
+    break-inside: avoid-page;
+    display: inline-block;
+}

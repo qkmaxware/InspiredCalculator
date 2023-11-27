@@ -4,6 +4,11 @@ function scrollToBottom(el) {
     el.scrollTop = el.scrollHeight;
 }
 
+function plotlyInit(div, data, layout) {
+    console.log(layout);
+    Plotly.newPlot(div, data, layout, {responsive: true});
+}
+
 async function downloadFileFromStream (fileName, contentStreamReference) {
     const arrayBuffer = await contentStreamReference.arrayBuffer();
     const blob = new Blob([arrayBuffer]);

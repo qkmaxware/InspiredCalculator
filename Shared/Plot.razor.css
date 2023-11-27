@@ -1,0 +1,9 @@
+.plot {
+    width: 512px;
+    max-width: 100%;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+.plot ::-webkit-scrollbar {
+    display: none;
+}

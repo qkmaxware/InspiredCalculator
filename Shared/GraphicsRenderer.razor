@@ -1,0 +1,9 @@
+@switch (Graphic) {
+    case PlotGraphic plot:
+        <Plot Data=plot.Data Layout=plot.Layout></Plot>
+        break;
+}
+
+@code {
+    [Parameter] public IGraphics? Graphic {get; set;}
+}

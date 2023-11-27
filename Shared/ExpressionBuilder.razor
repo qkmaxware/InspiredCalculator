@@ -155,6 +155,40 @@
         this.Select(node.TryGetChild(0) ?? node);
         StateHasChanged();
     }
+    public void AddMatrix(string[,] matrix) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append('[');
+            for (var i = 0; i < matrix.GetLength(0); i++) {
+                if (i != 0)
+                    text.Append(';');
+                for (var j = 0; j < matrix.GetLength(1); j++) {
+                    text.Append(matrix[i, j]);
+                    if (j != 0)
+                        text.Append(' ');
+                    text.Append(',');
+                }
+            }
+            text.Append(']');
+            StateHasChanged(); return;
+        }
+
+        var rows = Math.Max(1, matrix.GetLength(0));
+        var columns = Math.Max(1, matrix.GetLength(1));
+
+        var node = Selected;
+        var mode = new MatrixInputMode(rows, columns);
+        node.ReconfigureMode(mode);
+        for (var i = 0; i < matrix.GetLength(0); i++) {
+            for (var j = 0; j < matrix.GetLength(1); j++) {
+                var index = mode.Get1dIndex(i, j);
+                var child = new TreeBuilderNode();
+                child.ReconfigureMode(new AtomInputMode(matrix[i, j]));
+                node.SetChild(index, child);
+            }
+        }
+        this.Select(node.TryGetChild(0) ?? node);
+        StateHasChanged();
+    }
 
     public void AddMatrixIdentity(int size) {
         if (Mode == BuilderMode.FreeType) {
@@ -551,6 +585,49 @@
         var parent = node.GetParent();
 
         var op = new TreeBuilderNode();
+        op.ReconfigureMode(mode);
+
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+
+    public void AddGraphicsPlot2d() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("plot2d()"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new Plot2dInputMode();
+        op.ReconfigureMode(mode);
+
+        if (parent is not null) {
+            parent.ReplaceChild(node, op);
+        } else {
+            this.root = op;
+        }
+
+        op.SetChild(0, node);
+        this.Select(op.TryGetChild(0) ?? op);
+    }
+    public void AddGraphicsPlot3d() {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append("plot3d()"); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var parent = node.GetParent();
+
+        var op = new TreeBuilderNode();
+        var mode = new Plot3dInputMode();
         op.ReconfigureMode(mode);
 
         if (parent is not null) {

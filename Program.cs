@@ -9,5 +9,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<InspiredCalculator.Js.Alerts>();
 builder.Services.AddScoped<InspiredCalculator.Js.Printing>();
+builder.Services.AddScoped<InspiredCalculator.Js.Plotly>();
 
 await builder.Build().RunAsync();

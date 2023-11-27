@@ -10,6 +10,8 @@ public class History : IList<History.Record> {
 
         public string? RawText;
 
+        public List<IGraphics> Attachments {get; private set;} = new List<IGraphics>();
+
         public Record() {}
         public Record(string? text) {
             this.RawText = text;

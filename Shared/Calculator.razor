@@ -114,9 +114,10 @@
         var History = document?.History;
         if (expr is not null && History is not null) {
             var history = expr switch {
-                TreeBuilderNode e => new History.Record(e, IterativeSimplify(e.MakeExpression(sideEffects))),
+                TreeBuilderNode e => new History.Record(e, e.MakeExpression(sideEffects).IterativeSimplify()),
                 _ => new History.Record(expr?.ToString())
             };
+            history.Attachments.AddRange(sideEffects.Graphics);
             History.Add(history);
             if (Documents is not null)
                 await Documents.RepaintAsync();
@@ -127,33 +128,7 @@
                 await Control.UpdateVariables(sideEffects.Assignments);
             }
             await ScrollDisplayToBottom();
-        } else {
-            Console.WriteLine("No expression");
-        }
-    }
-
-    private const int MAX_ITERATIONS = 20;
-    private IExpression? IterativeSimplify(IExpression? expr) {
-        if (expr is null)
-            return null;
-
-        for (var i = 0; i < MAX_ITERATIONS; i++) {
-            var next_expr = expr.Simplify();
-
-            // Simplification failed, return the prior successful version
-            if (next_expr is null)
-                return expr;
-            
-            // Simplification made no changes, return prior successful version
-            if (expr == next_expr)
-                return expr;
-            
-            // Try again with a simpler expression
-            expr = next_expr;
-        }
-
-        // Fallback, we have reached max iterations and haven't fully simplified, return the best one we've got
-        return expr;
+        } 
     }
 
     #region Document Menu

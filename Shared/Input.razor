@@ -35,7 +35,7 @@
                 </Content>
             </Tab>
             <Tab>
-                <Title>°C/°F</Title>@*Values for standard measurement units*@
+                <Title>°C</Title>@*Values for standard measurement units*@
                 <Content>
                     <div class="w3-bar-block">
                         <button class="w3-button w3-bar-item" @onclick=@(() => { addConversion(UOM.Angles); closeCatalog(); })><span class="symbol">convert<sub>@UOM.Angles.Name</sub></span> Convert between different angular measurements.</button>
@@ -96,8 +96,9 @@
                 <Content>
                     <Accordion Title="Matrix">
                         <div class="w3-bar-block">
-                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrix(); closeCatalog(); })><img src="icons/matrix.2x2.svg" class="icon large"> Create an empty NxM matrix</button>
-                            <button class="w3-button w3-bar-item" @onclick=@(async () => { await makeMatrixIdentity(); closeCatalog(); })><img src="icons/matrix.identity.svg" class="icon large"> Create a NxN identity matrix</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { showMatrixNxMCreator(); closeCatalog(); })><img src="icons/matrix.2x2.svg" class="icon large"> Create an empty NxM matrix</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { showIdentMatrixNxNCreator(); closeCatalog(); })><img src="icons/matrix.identity.svg" class="icon large"> Create a NxN identity matrix</button>
+                            <button class="w3-button w3-bar-item" @onclick=@(async () => { showCsvToMatrixMaker(); closeCatalog(); })><img src="icons/csv.svg" class="icon large"> Load CSV file as a matrix</button>
                         </div>
                     </Accordion>
                     <Accordion Title="Calculus">
@@ -107,6 +108,15 @@
                             <button class="w3-button w3-bar-item" @onclick=@(() => { makeDefIntegral(); closeCatalog(); })><img src="icons/integral.definite.svg" class="icon large"> Definite intrgral of a function</button>
                         </div>
                     </Accordion>
+                </Content>
+            </Tab>
+            <Tab>
+                <Title><img src="icons/plot.2d.svg" class="icon"></Title>
+                <Content>
+                    <div class="w3-bar-block">
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addPlot2d(); closeCatalog(); })><img src="icons/plot.2d.svg" class="icon large"> Plot a 2D function over x</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { addPlot3d(); closeCatalog(); })><img src="icons/plot.3d.svg" class="icon large"> Plot a 3D function over x and y</button>
+                    </div>
                 </Content>
             </Tab>
             <Tab>
@@ -130,13 +140,60 @@
     </div>
 </Modal>
 
+<Modal @ref=MatrixMaker Title="Create NxM Matrix">
+    <div class="w3-padding">
+        <label>Rows:</label>
+        <input type="number" @bind=createMatrixRows class="w3-input"/>
+        <label>Columns:</label>
+        <input type="number" @bind=createMatrixColumns class="w3-input"/>
+        <div class="w3-padding w3-center">
+            <button class="w3-button wide" @onclick=createMatrixNxM>Create</button>
+        </div>
+    </div>
+</Modal>
+
+<Modal @ref=MatrixIdentityMaker Title="Create NxN Identity Matrix">
+    <div class="w3-padding left-align">
+        <label>Rows & Columns:</label>
+        <input type="number" @bind=createMatrixRows class="w3-input"/>
+        <div class="w3-padding w3-center">
+            <button class="w3-button wide" @onclick=createIdentMatrixNxN>Create</button>
+        </div>
+    </div>
+</Modal>
+
+<Modal @ref=MatrixFromCsvMaker Title="CSV To Matrix">
+    <div class="w3-padding left-align">
+        <label>Options</label><br>
+        <p class="w3-container">
+            <label>My data has headers</label> <input type="checkbox" class="w3-check" @bind=csv2MatrixHasHeaders>
+        </p>
+        <label>CSV File</label><br>
+        <p class="w3-container">
+            <label class="w3-button w3-bar-item">
+                <img src="icons/csv.svg" class="icon large"> Select File
+                <InputFile style="display:none;" OnChange=@(async (e) => { await loadCsvForMatrix(e); }) accept=".csv" />
+            </label>
+            @if (fileToConvertToMatrix is not null) {
+                <text>Valid CSV; </text><span>size: @(fileToConvertToMatrix.Rows - (csv2MatrixHasHeaders ? 1 : 0))x@(fileToConvertToMatrix.Columns)</span>
+            } else {
+                <span class="error">Please load a valid CSV file.</span>
+            }
+        </p>
+        <div class="w3-padding w3-center">
+            <button class="w3-button wide" @onclick=addMatrixFromCsv>Create</button>
+        </div>
+    </div>
+</Modal>
+
+
 <div id="Input">
-    <div id="Navigation" class="w3-bottombar w3-topbar" style="padding: 12px">
+    <div id="Navigation" class="bottombar topbar" style="padding: 12px">
         <div class="w3-row">
-            <div class="w3-col s2 left-align">
-                <button class="w3-button full" @onclick=changeMode>mode</button>
+            <div class="w3-col s3 left-align">
+                <button class="w3-button menu-button full" @onclick=changeMode>mode</button>
             </div>
-            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+            <div class="w3-row w3-col s6 centre-align arrow-container">
                 <div class="w3-col s4">
                     <button class="w3-button full arrow top-left" @onclick=navigateUpLeft>&nbsp;</button>
                 </div>
@@ -147,15 +204,15 @@
                     <button class="w3-button full arrow top-right" @onclick=navigateUpRight>&nbsp;</button>
                 </div>
             </div>
-            <div class="w3-col s2 right-align">
-                <a href="https://github.com/qkmaxware/InspiredCalculator/wiki" target="_blank" class="w3-button full"><img src="icons/help.svg" class="icon"> help</a>
+            <div class="w3-col s3 right-align">
+                <a href="https://github.com/qkmaxware/InspiredCalculator/wiki" target="_blank" class="w3-button menu-button full"><img src="icons/help.svg" class="icon"> help</a>
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-col s2 left-align">
+            <div class="w3-col s3 left-align">
                 &nbsp;
             </div>
-            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+            <div class="w3-row w3-col s6 centre-align arrow-container">
                 <div class="w3-col s4">
                     <button class="w3-button full arrow left" @onclick=navigateLeft>&leftarrow;</button>
                 </div>
@@ -166,15 +223,15 @@
                     <button class="w3-button full arrow right" @onclick=navigateRight>&rightarrow;</button>
                 </div>
             </div>
-            <div class="w3-col s2 right-align">
-                &nbsp;
+            <div class="w3-col s3 right-align">
+                <button class="w3-button menu-button full" @onclick=clickSwitch><img src="icons/tab.svg" class="icon"> switch</button>
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-col s2 left-align">
-                <button class="w3-button full" @onclick=clickSwitch><img src="icons/tab.svg" class="icon"> switch</button>
+            <div class="w3-col s3 left-align">
+                <button class="w3-button menu-button full" @onclick=@(async () => { if (Calculator is not null){await Calculator.ScrollDisplayToBottom();}})>&DownArrowBar; to bottom</button>
             </div>
-            <div class="w3-row w3-col s8 centre-align" style="padding-left: 32px; padding-right: 32px">
+            <div class="w3-row w3-col s6 centre-align arrow-container">
                 <div class="w3-col s4">
                     <button class="w3-button full arrow bottom-left" @onclick=navigateDownLeft>&nbsp;</button>
                 </div>
@@ -185,8 +242,8 @@
                     <button class="w3-button full arrow bottom-right" @onclick=navigateDownRight>&nbsp;</button>
                 </div>
             </div>
-            <div class="w3-col s2 right-align">
-                <button class="w3-button full" @onclick=clickMenu><img src="icons/menu.svg" class="icon"> menu</button>
+            <div class="w3-col s3 right-align">
+                <button class="w3-button menu-button full" @onclick=clickMenu><img src="icons/menu.svg" class="icon"> menu</button>
             </div>
         </div>
     </div>
@@ -287,25 +344,6 @@
             <tr>
                 <td class="left-align">
                     <div class="w3-dropdown-hover full">
-                        <button class="w3-button full">?!&rtri;</button>
-                        <div class="w3-dropdown-content w3-card-4">
-                            <button class="w3-button flat" @onclick=@(() => clickLetter('?'))>?</button>
-                            <button class="w3-button flat" @onclick=@(() => clickLetter('!'))>!</button>
-                        </div>
-                    </div>
-                </td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clicka>A</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clickb>B</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clickc>C</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clickd>D</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clicke>E</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clickf>F</button></td>
-                <td class="centre-align"><button class="w3-button full digit" @onclick=clickg>G</button></td>
-                <td class="centre-align">&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="left-align">
-                    <div class="w3-dropdown-hover full">
                         <button class="w3-button full">&pi;&rtri;</button>
                         <div class="w3-dropdown-content w3-card-4">
                             @foreach (var constant in Constant.All) {
@@ -317,6 +355,25 @@
                         </div>
                     </div>
                 </td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicka>A</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickb>B</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickc>C</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickd>D</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clicke>E</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickf>F</button></td>
+                <td class="centre-align"><button class="w3-button full digit" @onclick=clickg>G</button></td>
+                <td class="left-align">
+                    <div class="w3-dropdown-hover full">
+                        <button class="w3-button full">?!&rtri;</button>
+                        <div class="w3-dropdown-content w3-card-4">
+                            <button class="w3-button flat" @onclick=@(() => clickLetter('?'))>?</button>
+                            <button class="w3-button flat" @onclick=@(() => clickLetter('!'))>!</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="left-align">&nbsp;</td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=clickh>H</button></td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=clicki>I</button></td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=clickj>J</button></td>
@@ -900,17 +957,53 @@
         Calculator?.GetBuilder()?.AddConversion(quanta);
     }
 
-    private async Task makeMatrix() {
-        var rows = await alert.Ask<int>("Number of ROWs?", "2");
-        var columns = await alert.Ask<int>("Number of COLUMNs", "2");
-
-        Calculator?.GetBuilder()?.AddMatrix(rows, columns);
+    private Modal? MatrixMaker;
+    private int createMatrixRows = 2;
+    private int createMatrixColumns = 2;
+    private void showMatrixNxMCreator() {
+        MatrixMaker?.Show();
     }
-    private async Task makeMatrixIdentity() {
-        var rows = await alert.Ask<int>("Number of ROWs/COLUMNs?", "2");
-
-        Calculator?.GetBuilder()?.AddMatrixIdentity(rows);
+    private void createMatrixNxM() {
+        Calculator?.GetBuilder()?.AddMatrix(createMatrixRows, createMatrixColumns);
+        MatrixMaker?.Hide();
     }
+    private Modal? MatrixIdentityMaker;
+    private void showIdentMatrixNxNCreator() {
+        MatrixIdentityMaker?.Show();
+    }
+    private void createIdentMatrixNxN() {
+        Calculator?.GetBuilder()?.AddMatrixIdentity(createMatrixRows);
+        MatrixIdentityMaker?.Hide();
+    }
+    private Modal? MatrixFromCsvMaker;
+    private bool csv2MatrixHasHeaders;
+    private void showCsvToMatrixMaker() {
+        MatrixFromCsvMaker?.Show();
+    }
+    private IO.CsvFile? fileToConvertToMatrix;
+    private async Task loadCsvForMatrix(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs e) {
+        this.fileToConvertToMatrix = null;
+        foreach (var path in e.GetMultipleFiles(1)) {
+            using MemoryStream ms = new MemoryStream();
+            await path.OpenReadStream(maxAllowedSize: 512000 * 4).CopyToAsync(ms);
+            ms.Position = 0;
+
+            using var reader = new StreamReader(ms);
+            var contents = reader.ReadToEnd();
+            if (ReferenceEquals(contents, null))
+                return;
+            
+            this.fileToConvertToMatrix = IO.CsvFile.Parse(',', contents);
+        }
+    }
+    private void addMatrixFromCsv() {
+        if (fileToConvertToMatrix is null)
+            return;
+        var mtx = fileToConvertToMatrix.ToMatrix(this.csv2MatrixHasHeaders);
+        Calculator?.GetBuilder()?.AddMatrix(mtx); 
+        MatrixFromCsvMaker?.Hide();
+    }
+
     private void makeDerivative() {
         Calculator?.GetBuilder()?.AddDerivative();
     }
@@ -919,5 +1012,12 @@
     }
     private void makeDefIntegral() {
         Calculator?.GetBuilder()?.AddDefIntegral();
+    }
+
+    private void addPlot2d() {
+        Calculator?.GetBuilder()?.AddGraphicsPlot2d();
+    }
+    private void addPlot3d() {
+        Calculator?.GetBuilder()?.AddGraphicsPlot3d();
     }
 }
