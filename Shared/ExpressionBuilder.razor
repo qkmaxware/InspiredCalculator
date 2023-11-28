@@ -59,6 +59,18 @@
         StateHasChanged();
     }
 
+    public void AddAttachment(string name, IGraphics attachment) {
+        if (Mode == BuilderMode.FreeType) {
+            text.Append(name); StateHasChanged(); return;
+        }
+
+        var node = Selected;
+        var mode = new AttachmentInputMode(name, attachment);
+        node.ReconfigureMode(mode);
+        this.Select(node);
+        StateHasChanged();
+    }
+
     public void AddDigit(int digit) {
         if (Mode == BuilderMode.FreeType) {
             text.Append(digit); StateHasChanged(); return;

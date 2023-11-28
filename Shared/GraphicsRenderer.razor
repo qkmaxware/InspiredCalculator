@@ -2,6 +2,9 @@
     case PlotGraphic plot:
         <Plot Data=plot.Data Layout=plot.Layout></Plot>
         break;
+    case ImageUrl image:
+        <Image Url=@(image.Url)></Image>
+        break;
 }
 
 @code {

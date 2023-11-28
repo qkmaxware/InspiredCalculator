@@ -12,3 +12,10 @@ public class PlotGraphic : IGraphics {
     public Js.Plotly.Trace[] Data {get; private set;}
     public Js.Plotly.Layout Layout {get; private set;}
 }
+
+public class ImageUrl : IGraphics {
+    public string Url {get; private set;}
+    public ImageUrl(string url) {
+        this.Url = url;
+    }
+}

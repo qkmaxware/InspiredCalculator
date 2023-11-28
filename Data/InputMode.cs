@@ -12,6 +12,20 @@ public abstract class InputMode {
     public abstract IExpression MakeExpression(SideEffects sideEffects, IExpression?[] subexpressions);
 }
 
+public class AttachmentInputMode : InputMode {
+    public string FileName {get; private set;}
+    public IGraphics Attachment {get; private set;}
+    public AttachmentInputMode(string name, IGraphics attachment) {
+        this.FileName = name;
+        this.Attachment = attachment;
+    }
+    public override int SubExpressionCount() => 0;
+    public override IExpression MakeExpression(SideEffects sideEffects, IExpression?[] subexpressions) {
+        sideEffects.Graphics.Add(Attachment);
+        return new Symbol(FileName);
+    }
+}
+
 public abstract class DirectInputMode : InputMode {
     public abstract int InputLength {get;}
     public abstract void Clear();

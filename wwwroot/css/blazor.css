@@ -2,6 +2,18 @@
     margin: 2cm;
 }
 
+body {
+    background-color: rgb(40, 40, 40);
+    color: white;
+}
+
+@media print {
+    body {
+        background-color: white;
+        color: black;
+    }
+}
+
 img.icon {
     height: 1em;
 }

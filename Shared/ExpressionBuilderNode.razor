@@ -11,6 +11,9 @@
         case ConstantInputMode constant:
             <span class="const">@constant.Constant.RootSymbol<sub>@constant.Constant.SubscriptSymbol</sub></span>
             break;
+        case AttachmentInputMode attachment:
+            <span class="value"><i>@attachment.FileName</i></span>
+            break;
         case ParenthesizedInputMode paren:
              <section class="parenthesis">
                 @for (var i = 0; i < Node.ChildrenCount; i++) {

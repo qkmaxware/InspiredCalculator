@@ -116,6 +116,7 @@
                     <div class="w3-bar-block">
                         <button class="w3-button w3-bar-item" @onclick=@(() => { addPlot2d(); closeCatalog(); })><img src="icons/plot.2d.svg" class="icon large"> Plot a 2D function over x</button>
                         <button class="w3-button w3-bar-item" @onclick=@(() => { addPlot3d(); closeCatalog(); })><img src="icons/plot.3d.svg" class="icon large"> Plot a 3D function over x and y</button>
+                        <button class="w3-button w3-bar-item" @onclick=@(() => { showUploadImage(); closeCatalog(); })><img src="icons/image.svg" class="icon large"> Attach image file</button>
                     </div>
                 </Content>
             </Tab>
@@ -140,7 +141,7 @@
     </div>
 </Modal>
 
-<Modal @ref=MatrixMaker Title="Create NxM Matrix">
+<Modal @ref=MatrixMaker Title="Create Matrix">
     <div class="w3-padding">
         <label>Rows:</label>
         <input type="number" @bind=createMatrixRows class="w3-input"/>
@@ -152,7 +153,7 @@
     </div>
 </Modal>
 
-<Modal @ref=MatrixIdentityMaker Title="Create NxN Identity Matrix">
+<Modal @ref=MatrixIdentityMaker Title="Create Identity Matrix">
     <div class="w3-padding left-align">
         <label>Rows & Columns:</label>
         <input type="number" @bind=createMatrixRows class="w3-input"/>
@@ -164,11 +165,11 @@
 
 <Modal @ref=MatrixFromCsvMaker Title="CSV To Matrix">
     <div class="w3-padding left-align">
-        <label>Options</label><br>
+        <label>Options:</label><br>
         <p class="w3-container">
             <label>My data has headers</label> <input type="checkbox" class="w3-check" @bind=csv2MatrixHasHeaders>
         </p>
-        <label>CSV File</label><br>
+        <label>CSV File:</label><br>
         <p class="w3-container">
             <label class="w3-button w3-bar-item">
                 <img src="icons/csv.svg" class="icon large"> Select File
@@ -186,6 +187,38 @@
     </div>
 </Modal>
 
+<Modal @ref=uploadImageModal Title="Add/Upload Image">
+    <div class="w3-padding">
+        <label>Source:</label>
+        <TabView>
+            <Tab>
+                <Title>Upload</Title>
+                <Content>
+                    <label>Max Size: @(maxImageUploadSize)bytes</label><br>
+                    <label class="w3-button w3-bar-item">
+                        <img src="icons/image.svg" class="icon large"> Select File
+                        <InputFile style="display:none;" OnChange=@(async (e) => { await loadImage(e); }) type="image" />
+                    </label>
+                    @if (imageUrl is not null) {
+                        <text>Valid Image; </text><span>filename: @imageName</span>
+                    } else {
+                        <span class="error">Please load a valid Image file.</span>
+                    }
+                </Content>
+            </Tab>
+            <Tab>
+                <Title>From URL</Title>
+                <Content>
+                    <input type="text" placeholder="File Name" @bind=imageName class="w3-input"/>
+                    <input type="text" placeholder="URL" @bind=imageUrl class="w3-input"/>
+                </Content>
+            </Tab>
+        </TabView>
+        <div class="w3-padding w3-center">
+            <button class="w3-button wide" @onclick=addUploadedImage>Add</button>
+        </div>
+    </div>
+</Modal>
 
 <div id="Input">
     <div id="Navigation" class="bottombar topbar" style="padding: 12px">
@@ -247,7 +280,7 @@
             </div>
         </div>
     </div>
-    <div id="Arithmetic" class='w3-margin-bottom w3-margin-top @(IsCtrl ? "keyboard-alternate" : "keyboard-standard")'>
+    <div id="Arithmetic" class='@(IsCtrl ? "keyboard-alternate" : "keyboard-standard")'>
         <table>
             <tr>
                 <td class="left-align"><button class="w3-button full special" @onclick=clickCtrl>ctrl</button></td>
@@ -256,9 +289,9 @@
                 <td class="centre-align"><label>:=</label><button class="w3-button full" @onclick=clickVar>var</button></td>
                 <td class="right-align"><label>clear</label><button class="w3-button full" @onclick=clickDelete>&leftarrow; del</button></td>
             </tr>
+            <tr style="font-size: 4px"><td>&nbsp;</td></tr>
             <tr>
                 <td class="left-align">
-                    <label>&nbsp;</label>
                     <div class="w3-dropdown-hover full">
                         <button class="w3-button full">trig&rtri;</button>
                         <div class="w3-dropdown-content w3-card-4">
@@ -275,7 +308,6 @@
                 <td class="centre-align"><button class="w3-button full digit" @onclick=click8>&nbsp;8&nbsp;</button></td>
                 <td class="centre-align"><button class="w3-button full digit" @onclick=click9>&nbsp;9&nbsp;</button></td>
                 <td class="right-align">
-                    <label>&nbsp;</label>
                     <button class="w3-button full right" @onclick=clickCatalog><img src="icons/book.svg" class="icon"></button>
                 </td>
             </tr>
@@ -1002,6 +1034,34 @@
         var mtx = fileToConvertToMatrix.ToMatrix(this.csv2MatrixHasHeaders);
         Calculator?.GetBuilder()?.AddMatrix(mtx); 
         MatrixFromCsvMaker?.Hide();
+    }
+
+    Modal? uploadImageModal;
+    private string? imageName;
+    private string? imageUrl;
+    private int maxImageUploadSize = 512000 * 4;
+    public void showUploadImage() {
+        uploadImageModal?.Show();
+    }
+    private async Task loadImage(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs e) {
+        imageUrl = null;
+        using MemoryStream ms = new MemoryStream();
+        foreach (var path in e.GetMultipleFiles(1)) {
+            await path.OpenReadStream(maxAllowedSize: maxImageUploadSize).CopyToAsync(ms);
+            var b64 = Convert.ToBase64String(ms.ToArray());
+            var ext = System.IO.Path.GetExtension(path.Name).Substring(1);
+            var dataUrl = "data:image/" + ext + ";base64," + b64;
+            imageName = path.Name;
+            imageUrl = dataUrl;
+        }
+    }
+    public void addUploadedImage() {
+        if (imageName is null || imageUrl is null)
+            return;
+
+        Calculator?.GetBuilder()?.AddAttachment(imageName, new ImageUrl(imageUrl));
+        
+        uploadImageModal?.Hide();
     }
 
     private void makeDerivative() {

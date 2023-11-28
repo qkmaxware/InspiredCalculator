@@ -1,0 +1,7 @@
+@if (Url is not null) {
+    <img src="@Url">
+}
+
+@code {
+    [Parameter] public string? Url {get; set;}
+}
