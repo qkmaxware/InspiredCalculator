@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-BWo65wmebktB\/8TzY41tclnz4O5xFMddkM1erNeJdVk=",
+      "hash": "sha256-4mjswktPfeen4BR0pwj3u11h9+I06xbruxuKtC0OQlQ=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -41,7 +41,7 @@
       "url": "_framework\/Cas.dll"
     },
     {
-      "hash": "sha256-pGY26COLHjEt2hZXZlvZhdKJeq9SEJp7uocrTbaZcTk=",
+      "hash": "sha256-\/cNrQt83KS+t7FQEgo8Yf5GhQN4nH+iPAfeLYbmFIOU=",
       "url": "_framework\/InspiredCalculator.dll"
     },
     {
@@ -49,7 +49,7 @@
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
-      "hash": "sha256-3zQvDg1DaJKUuQhM43884YPOa\/0jSqbBl70yTEva+70=",
+      "hash": "sha256-NZSg+qwvdLrakcvcY7uN+kdfMvQLdkMyBMBxw0XJ4tM=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.dll"
     },
     {
@@ -137,7 +137,7 @@
       "url": "_framework\/System.Net.Primitives.dll"
     },
     {
-      "hash": "sha256-y7XSj8ZmDIXTNUym8FQwXBQf\/p921LEJLlNHIJDXO60=",
+      "hash": "sha256-1H8gE329PWix7m9ffhzeZq4D4RVsMVblX46bneqJqi0=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -145,7 +145,7 @@
       "url": "_framework\/System.Private.Uri.dll"
     },
     {
-      "hash": "sha256-QZsRHGi\/k23f2M8z364X6cVO\/gmWvx\/7GNpCBZFD640=",
+      "hash": "sha256-SGQEaUDIRlPLD\/J1sjBBc1qHmGaz6Rc\/CVpLmAKG8Lg=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -165,11 +165,11 @@
       "url": "_framework\/System.Text.RegularExpressions.dll"
     },
     {
-      "hash": "sha256-WVkX5ukIqOKDK9PJwdYk93UguTdo0j0lqWNLBr3mmg0=",
+      "hash": "sha256-Jf0OTW09SBK0ex8GZW+yPq6xzE77PapJIv963\/b5pdk=",
       "url": "InspiredCalculator.styles.css"
     },
     {
-      "hash": "sha256-D5Hl1rB8QvpOj5BS6UyiaFXQpaXo1OJvFsUIGufUOPU=",
+      "hash": "sha256-VfAEIPrjgnAd5UDxVo5GX7OEjUiKK\/ujpnthdueubU0=",
       "url": "css\/blazor.css"
     },
     {
@@ -277,10 +277,6 @@
       "url": "favicon\/site.webmanifest"
     },
     {
-      "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
-      "url": "icon-192.png"
-    },
-    {
       "hash": "sha256-mKa8sbRhjTi7Rmk0WLcjm1TzckLpywLGltTdfQQ\/aU4=",
       "url": "icons\/book.svg"
     },
@@ -315,6 +311,10 @@
     {
       "hash": "sha256-LVwcZ0ZMAYOLTb6bidVHqOFEFzWAz8jT8R7vLz\/kzD4=",
       "url": "icons\/house.svg"
+    },
+    {
+      "hash": "sha256-ChtAGOHRM1JNahwgsnzkc1FTRecW1nI0GI2OVhMtEp4=",
+      "url": "icons\/image.svg"
     },
     {
       "hash": "sha256-WIMPCoFHANqGjfJc4wyBNoxpamTk6m6Jmt5FsEHgpg4=",
@@ -397,5 +397,5 @@
       "url": "lib\/plotly\/Readme.md"
     }
   ],
-  "version": "hffm3OKq"
+  "version": "GbyAWeuj"
 };

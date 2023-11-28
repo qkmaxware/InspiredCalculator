@@ -380,12 +380,23 @@ span.error[b-dqofjblu5l] {
     break-inside: avoid-page;
     display: inline-block;
 }
+/* /Shared/Image.razor.rz.scp.css */
+img[b-5flu15b81v] {
+    width: 512px;
+    max-width: 100%;
+    object-fit: contain;
+}
 /* /Shared/Input.razor.rz.scp.css */
 
 @media print {
     #Input[b-yg96lenv5y] {
         display: none;
     }
+}
+
+#Arithmetic[b-yg96lenv5y] {
+    padding-top: 2px;
+    padding-bottom: 6px;
 }
 
 .menu-button[b-yg96lenv5y] {
